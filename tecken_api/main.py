@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 app = FastAPI()
 # hej test
+#test 2
 # Modell för data som skickas till /interpret
 class Gesture(BaseModel):
     gesture: str
