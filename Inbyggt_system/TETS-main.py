@@ -29,6 +29,7 @@ def server_method():
         count += 1
 
 
+
 # Mouse callback to detect button click
 def mouse_callback(event, x, y, flags, param):
     global text
@@ -130,25 +131,26 @@ while True:
     y2 = y1 + screen_height
     
     # Crop the frame
-    cropped = frame[y1:y2, :]
+    frame = frame[y1:y2, :]
     
+
     # Draw the button
-    draw_button(cropped)
+    draw_button(frame)
     
     # Get the size of the text to be drawn
     text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1.2, 2)[0]
     text_width, text_height = text_size
     
     # Define text position (center horizontally)
-    text_x = (cropped.shape[1] - text_width) // 2
+    text_x = (frame.shape[1] - text_width) // 2
     text_y = 40  # Fixed Y position for consistency
 
     # Add text to the cropped frame
-    cv2.putText(cropped, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX,
+    cv2.putText(frame, text, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX,
                 1.2, (255, 255, 255), 2, cv2.LINE_AA)
     
     # Show the frame
-    cv2.imshow(window_name, cropped)
+    cv2.imshow(window_name, frame)
     
     # Check if the 'esc' key is pressed
     if cv2.waitKey(1) == 27:
