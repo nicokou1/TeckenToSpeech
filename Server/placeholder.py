@@ -19,7 +19,7 @@ def try_gesture(data: Gesture):
     return {
         interpret_gesture(data)
     }
-
+#test
 # API för att tolka gest
 @app.post("/interpret")
 def interpret_gesture(data: Gesture):
