@@ -1,5 +1,5 @@
 .idea/
 .venv/
-.iml/
+.iml
 venv/
 __pycache__/
