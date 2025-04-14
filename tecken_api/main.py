@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
-
+# hej test
 # Modell för data som skickas till /interpret
 class Gesture(BaseModel):
     gesture: str
