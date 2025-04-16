@@ -61,10 +61,10 @@ fun PostListScreen() {
     // för varje element, skriv ut title i UI
     LazyColumn {
         items(posts) { post ->
-            Text(
-                text = post.title,
-                color = Color.Blue,
-                fontSize = 15.sp)
+            Column {
+                Text(text = "ID: ${post.id}")
+                Text(text = "Bokstav: ${post.letter}")
+            }
         }
     }
 }
