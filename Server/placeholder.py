@@ -5,6 +5,8 @@ from pydantic import BaseModel
 from PIL import Image
 from io import BytesIO
 
+from starlette.responses import JSONResponse
+
 app = FastAPI()
 
 # Modell för data som skickas till /interpret
@@ -15,12 +17,26 @@ class Gesture(BaseModel):
 class ImageInput(BaseModel):
     picture: str
 
+class AppInput(BaseModel):
+    id: int
+    title: str
+    body: str
+
 # Test-endpoint för att kolla om servern lever
 @app.get("/status")
 def get_status():
     return {"status": "API is alive!"}
 
-
+@app.get("/app")
+def send_data():
+    data = [
+    {
+        "id":12,
+        "title":"Test123",
+        "body":"TestBody123"
+    }
+    ]
+    return JSONResponse(content=data)
 @app.get("/")
 def try_gesture(data: Gesture):
     return {
