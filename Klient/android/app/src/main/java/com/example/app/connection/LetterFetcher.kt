@@ -1,4 +1,4 @@
-package com.example.app.anslutning
+package com.example.app.connection
 
 // 2025-04-14
 // mimoza har lagt till:
@@ -9,14 +9,12 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 
 // suspend-funktioner används för tidskrävande uppgifter, som nätverksanslutning
 // måste köras i en coroutine (lättare alternativ till java.Thread)
-// returnerar datatypen List<Post>
+// returnerar datatypen Letter
 
-suspend fun fetchPosts(): List<Post> {
+suspend fun fetchPosts(): List<Letter> {
 
     //skapar HTTP-klient med en CIO-motor
     val client = HttpClient(CIO) {
@@ -24,12 +22,11 @@ suspend fun fetchPosts(): List<Post> {
         //klientdriven innehållsförhandling (HTTP Header "accept: application/json")
         install(ContentNegotiation) {
 
-            // ignorerar fält i JSON som inte finns som instansvariabler i Post
-            json(Json { ignoreUnknownKeys = true })
+            // ignorerar fält i JSON som inte finns som instansvariabler i Letter-klassen            json(Json { ignoreUnknownKeys = true })
         }
     }
 
     // klienten anropar GET och får ett HTTP Response-objekt som innehåller rådata
-    // .body() omvandlar datan till List<Post>
+    // .body() omvandlar datan till en bokstav
     return client.get("http://10.2.0.95:8000/app").body()
 }

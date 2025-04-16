@@ -1,4 +1,4 @@
-package com.example.app.anslutning
+package com.example.app.connection
 
 // 20225-04-14
 // mimoza har lagt till:
@@ -7,7 +7,7 @@ package com.example.app.anslutning
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Post(
+data class Letter(
     val id: Long,
     val letter: String,
 )
