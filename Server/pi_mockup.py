@@ -1,9 +1,11 @@
 import requests
 import time
+
+
+# Hela klassen är @author Nicolas K. 2025-04-16
 def detect_gesture():
     #OpenCV logik
     return "C", 0.93
-
 
 while True:
     gesture, confidence = detect_gesture()

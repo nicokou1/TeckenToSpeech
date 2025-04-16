@@ -8,15 +8,15 @@ from io import BytesIO
 from starlette.responses import JSONResponse
 
 app = FastAPI()
-
+# Hela klassen är @author Nicolas K. 2025-04-16
 # Modell för data som skickas till /interpret
 class Gesture(BaseModel):
     gesture: str
     confidence: float
-
+# Modell för data som ska hämtas med /image
 class ImageInput(BaseModel):
     picture: str
-
+# Modell för data som ska skickas till /app
 class AppInput(BaseModel):
     id: int
     title: str
