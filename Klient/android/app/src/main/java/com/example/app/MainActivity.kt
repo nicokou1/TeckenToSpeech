@@ -33,6 +33,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 
+// HEJ HEJ!
 
 class MainActivity : ComponentActivity() {
 
