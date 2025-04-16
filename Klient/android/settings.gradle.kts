@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TTS"
+rootProject.name = "App"
 include(":app")
+ 
