@@ -6,13 +6,12 @@ from libcamera import Transform
 import threading
 import time
 
-# Global text variable and lock for thread-safety
-text = ""
-disconnect_lock = threading.Lock()
-connect = True
-fps = 20
+# Global variables
+text = "" # Top text
+connect = False # is connected to the server
+fps = 20 # the fps of the video sent to the server.
 
-# Server method that updates the text
+# Server method
 def server_method():
     global text
     global connect
@@ -37,8 +36,7 @@ def mouse_callback(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         # Check if the click is inside the "button" area (x1, y1, x2, y2)
         if button_x1 < x < button_x2 and button_y1 < y < button_y2:
-            with disconnect_lock:
-                connect = not(connect)
+            connect = not(connect)
                 
 
 # Get screen resolution
