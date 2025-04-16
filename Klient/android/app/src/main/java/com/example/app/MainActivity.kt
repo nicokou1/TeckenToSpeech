@@ -35,6 +35,10 @@ import androidx.compose.runtime.*
 
 // NEJ NEJ
 
+
+
+// HEJ HEJ!
+
 class MainActivity : ComponentActivity() {
 
     //onCreate är alltid det första som körs då appen öppnas
