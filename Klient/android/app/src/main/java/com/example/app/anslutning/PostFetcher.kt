@@ -1,4 +1,4 @@
-package com.example.app
+package com.example.app.anslutning
 
 // 2025-04-14
 // mimoza har lagt till:
