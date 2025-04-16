@@ -27,6 +27,14 @@ class AppInput(BaseModel):
 def get_status():
     return {"status": "API is alive!"}
 
+def send_datatest():
+    data = [
+        {
+            "gesture":"A",
+            "confidence": 0.93
+        }
+    ]
+    return JSONResponse(content=data)
 @app.get("/app")
 def send_data():
     data = [
@@ -42,6 +50,9 @@ def try_gesture(data: Gesture):
     return {
         interpret_gesture(data)
     }
+@app.post("/test")
+def test_image():
+    return send_datatest()
 
 @app.post("/image")
 def image_gesture(data: ImageInput):
