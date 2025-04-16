@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    // 2025-04-14
+    // mimoza har lagt till:
+    kotlin("plugin.serialization") version "1.9.22" //så att man kan använda @serializable
 }
 
 android {
@@ -56,4 +60,21 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // 2025-04-14
+    // mimoza har lagt till:
+    val ktorVersion = "2.3.4"
+
+    // Ktor Client – själva nätverksbiten
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+
+    // "CIO" = en typ av motor som hanterar nätverk – funkar för Android
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+
+    // För att läsa och skriva JSON-data
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+    // JSON-bibliotek
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }
