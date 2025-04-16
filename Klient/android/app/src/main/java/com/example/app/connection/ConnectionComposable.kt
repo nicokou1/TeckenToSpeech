@@ -20,21 +20,21 @@ import androidx.compose.runtime.setValue
 class ConnectionComposable {
 
     @Composable
-    fun PostListScreen() {
-        var posts by remember { mutableStateOf< List<Letter> >(emptyList()) }
+    fun PostLetterOnScreen() {
+        var fetchedLetter by remember { mutableStateOf< List<Letter> >(emptyList()) }
 
-        // startar en coroutine som fetchar de första 5 elementen
+        // startar en coroutine som kör fetchLetter()
         LaunchedEffect(Unit) {
-            posts = fetchPosts().take(5)
+            fetchedLetter = fetchLetter()
         }
 
         // items = generisk lista som elementen placeras i
         // för varje element, skriv ut title i UI
         LazyColumn {
-            items(posts) { post ->
+            items(fetchedLetter) { fetchedLetter ->
                 Column {
-                    Text(text = "ID: ${post.id}")
-                    Text(text = "Bokstav: ${post.letter}")
+                    Text(text = "ID: ${fetchedLetter.id}")
+                    Text(text = "Bokstav: ${fetchedLetter.letter}")
                 }
             }
         }

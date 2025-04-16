@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
 
         //composables som ska visas på UI
         setContent {
-            connection.PostListScreen()
+            connection.PostLetterOnScreen()
         }
     }
 }

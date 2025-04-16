@@ -14,7 +14,7 @@ import io.ktor.client.request.*
 // måste köras i en coroutine (lättare alternativ till java.Thread)
 // returnerar datatypen Letter
 
-suspend fun fetchPosts(): List<Letter> {
+suspend fun fetchLetter(): List<Letter> {
 
     //skapar HTTP-klient med en CIO-motor
     val client = HttpClient(CIO) {
