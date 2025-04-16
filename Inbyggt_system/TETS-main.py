@@ -11,14 +11,10 @@ from io import BytesIO
 import json
 import base64
 
-def detect_gesture(): # TEMP!
-    #OpenCV logik
-    return "C", 0.93
-
 # Global variables
 text = "" # Top text
 connect = False # is connected to the server
-fps = 20 # the fps of the video sent to the server.
+fps = 10 # the fps of the video sent to the server.
 urlmain = "http://10.20.14.33:8000"
 
 # Server method
@@ -29,20 +25,17 @@ def server_method():
     global urlmain
     count = 0
     while True:
-        gesture, confidence = detect_gesture()
-        
-        if gesture is not None and confidence >= 0.85 and connect:
+        if connect:
             # Capture the image as a NumPy array
             image_array = picam2.capture_array()
 
-# Convert from BGR to RGB by swapping the channels
             image_array_rgb = image_array[..., ::-1]  # This reverses the BGR channels to RGB
 
             # Convert the NumPy array to a PIL Image
             image = Image.fromarray(image_array_rgb)
             
             buffer = BytesIO()
-            image.save(buffer, format='JPEG', quality=70) # Compressed
+            image.save(buffer, format='JPEG', quality=1) # Compressed
 
             # Encode the image to base64
             encoded_image = base64.b64encode(buffer.getvalue()).decode('utf-8')
@@ -54,24 +47,12 @@ def server_method():
             url = urlmain+"/image"
             try:
                 response = requests.post(url, json=data)
-                text = "Svar från server:"+response.text
-                #text = "Fick svar!"
+                text = response # bör svara med en json fil med vad den tror jag tecknar
             except Exception as e:
-                text = e.__str__()
-                #text = "Misslyckades att skicka data:",e
-
-            time.sleep(10)
-
-            url = urlmain+"/status"
-            try:
-                response = requests.get(url)
-                text =response.text
-                #text = "Fick svar!"
-            except Exception as e:
-                text = e.__str__()
-                #text = "Ingen status."	§
-
-        time.sleep(1) # changed from 1 / fps to 10
+                print(e)
+        else:
+            text = ""
+        time.sleep(1 / fps) # changed from 1 / fps to 10
 
 
 # Mouse callback to detect button click
