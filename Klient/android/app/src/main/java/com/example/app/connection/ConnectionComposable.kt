@@ -12,7 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
 /**
- * For showing the values from the server on the UI.
+ * This class includes functions for showing letters on the UI.
  * Includes a coroutine for running suspended functions in the background.
  * @author Mimoza Behrami
  * @since 2025-04-14
@@ -35,8 +35,8 @@ class ConnectionComposable {
             fetchedLetter = fetchLetter()
         }
 
-        // items = generisk lista som elementen placeras i
-        // för varje element, skriv ut title i UI
+        // items = generisk lista som elementen placeras i.
+        // för varje element, skriv ut ID och letter i UI
         LazyColumn {
             items(fetchedLetter) { fetchedLetter ->
                 Column {

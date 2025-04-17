@@ -9,7 +9,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 /**
- * Client that sends GET-requests to server
+ * This class creates a HTTP client that sends GET-requests to a server.
  * @author Mimoza Behrami
  * @since 2025-04-14
  */
@@ -18,15 +18,17 @@ import kotlinx.serialization.json.Json
 // 2025-04-17 Mimoza Behrami - Ändrat URL-adress från testAPI till server
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 
-
-//-------------------------------------------------------------------------------
-// suspend-funktioner används för tidskrävande uppgifter, som nätverksanslutning.
-// måste köras i en coroutine (lättare alternativ till java.Thread).
-// returnerar en lista av datatypen Letter.
-//-------------------------------------------------------------------------------
+/**
+ * Suspend functions are used for time consuming operations, such as network communication.
+ * It must be called from within a coroutine, which is a lightweight alternative to a thread (java.Thread).
+ * .body() is used for deserializing the server response.
+ * @return a list containing Letter-objects
+ * @author Mimoza Behrami
+ * @since 2024-04-14
+ */
 suspend fun fetchLetter(): List<Letter> {
 
-    //skapar HTTP-klient med en CIO-motor
+    //skapar HTTP-klient med en CIO-motor (som sköter alla HTTP-anrop)
     val client = HttpClient(CIO) {
 
         //klientdriven innehållsförhandling (HTTP Header "accept: application/json")

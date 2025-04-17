@@ -9,7 +9,9 @@ import androidx.activity.compose.setContent
 import com.example.app.connection.*
 
 /**
- * Main class
+ * MainActivity is the primary entry point of the application.
+ * It is responsible for initializing the UI and setting up necessary components during app startup
+ * Also serves as a gateway to the business logic.
  * @author Mimoza Behrami & Farzaneh Ibrahim
  * @since 2025-04-14
  */
