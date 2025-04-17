@@ -8,6 +8,15 @@ import androidx.activity.compose.setContent
 //mimoza har lagt till följande importer:
 import com.example.app.connection.*
 
+/**
+ * Main class
+ * @author Mimoza Behrami & Farzaneh Ibrahim
+ * @since 2025-04-14
+ */
+
+// Changelog:
+// 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
+
 class MainActivity : ComponentActivity() {
 
     var connection : ConnectionComposable = ConnectionComposable()
@@ -18,7 +27,7 @@ class MainActivity : ComponentActivity() {
 
         //composables som ska visas på UI
         setContent {
-            connection.PostLetterOnScreen()
+            connection.ShowLetterOnScreen()
         }
     }
 }

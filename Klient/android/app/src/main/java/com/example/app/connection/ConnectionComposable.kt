@@ -12,16 +12,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
 /**
- * 2025-04-16
- * Detta är en coroutine som visar de mottagna värdena från servern till GUI
+ * For showing the values from the server on the UI.
+ * Includes a coroutine for running suspended functions in the background.
  * @author Mimoza Behrami
+ * @since 2025-04-14
  */
+
+// Changelog:
+// 2025-04-16 Mimoza Behrami - Ändrat från testkod till kod som passar för bokstäver
+// 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 
 class ConnectionComposable {
 
     @Composable
-    fun PostLetterOnScreen() {
-        var fetchedLetter by remember { mutableStateOf< List<Letter> >(emptyList()) }
+    fun ShowLetterOnScreen() {
+        var fetchedLetter by remember {
+            mutableStateOf<List<Letter>>(emptyList())
+        }
 
         // startar en coroutine som kör fetchLetter()
         LaunchedEffect(Unit) {

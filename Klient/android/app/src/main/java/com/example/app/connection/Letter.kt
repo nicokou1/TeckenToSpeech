@@ -1,13 +1,19 @@
 package com.example.app.connection
 
-// 20225-04-14
-// mimoza har lagt till:
-// Kotlin-objektet som JSON ska omvandlas till
-
 import kotlinx.serialization.Serializable
+
+/**
+ * Data class representing a letter object, to be used when deserializing from JSON.
+ * @author Mimoza Behrami
+ * @since 2025-04-14
+ */
+
+// Changelog:
+// 2025-04-16 Mimoza Behrami - Ändrat från testkod till kod som passar för bokstäver
+// 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 
 @Serializable
 data class Letter(
-    val id: Long,
+    val id: Int,
     val letter: String,
 )
