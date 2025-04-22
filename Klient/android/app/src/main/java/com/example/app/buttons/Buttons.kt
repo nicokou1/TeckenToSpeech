@@ -97,7 +97,7 @@ class Buttons : ComponentActivity() {
         ) {
             Icon(
                 imageVector = Icons.Filled.Delete,
-                contentDescription = "Högtalare",
+                contentDescription = "papperskorge",
                 tint = Color.White,
                 modifier = Modifier.size(32.dp)
             )
