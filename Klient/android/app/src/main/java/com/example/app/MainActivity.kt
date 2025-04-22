@@ -18,11 +18,6 @@ import androidx.compose.runtime.*
 import com.example.app.anslutning.Post
 import com.example.app.anslutning.fetchPosts
 
-// NEJ NEJ
-
-
-
-// HEJ HEJ!
 
 class MainActivity : ComponentActivity() {
 
