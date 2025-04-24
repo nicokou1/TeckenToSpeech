@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material.icons.filled.VolumeUp
+//import androidx.compose.material.icons.filled.VolumeUp
 import androidx.activity.ComponentActivity
 import androidx.compose.material.icons.filled.Delete
 
@@ -75,12 +75,12 @@ class Buttons : ComponentActivity() {
                 .size(80.dp)
                 .background(Color(0xFFFF80B7), shape = CircleShape)
         ) {
-            Icon(
-                imageVector = Icons.Filled.VolumeUp,
-                contentDescription = "Högtalare",
-                tint = Color.White,
-                modifier = Modifier.size(32.dp)
-            )
+//            Icon(
+//                imageVector = Icons.Filled.VolumeUp,
+//                contentDescription = "Högtalare",
+//                tint = Color.White,
+//                modifier = Modifier.size(32.dp)
+//            )
 
         }
     }
@@ -125,5 +125,3 @@ class Buttons : ComponentActivity() {
             }
         }
     }
-
-}
