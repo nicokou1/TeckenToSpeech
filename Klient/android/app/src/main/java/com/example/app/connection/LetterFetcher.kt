@@ -39,5 +39,5 @@ suspend fun fetchLetter(): List<Letter> {
 
     // klienten anropar GET och får ett HTTP Response-objekt som innehåller rådata.
     // .body() omvandlar datan till en bokstav.
-    return client.get("http://10.2.0.95:8000/app").body()
+    return client.get("http://10.2.6.169:8000/app").body()
 }

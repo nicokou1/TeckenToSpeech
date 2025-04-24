@@ -41,7 +41,8 @@ class ConnectionComposable {
             items(fetchedLetter) { fetchedLetter ->
                 Column {
                     Text(text = "ID: ${fetchedLetter.id}")
-                    Text(text = "Bokstav: ${fetchedLetter.letter}")
+                    Text(text = "Titel: ${fetchedLetter.title}")
+                    Text(text = "Innehåll: ${fetchedLetter.body}")
                 }
             }
         }
