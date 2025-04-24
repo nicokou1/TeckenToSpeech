@@ -15,7 +15,7 @@ import base64
 text = "" # Top text
 connect = False # is connected to the server
 fps = 10 # the fps of the video sent to the server.
-urlmain = "http://10.20.14.33:8000"
+urlmain = "http://10.1.1.106:8000"
 
 # Server method
 def server_method():
@@ -46,7 +46,9 @@ def server_method():
 
             url = urlmain+"/image"
             try:
-                response = requests.post(url, json=data)
+                print("CONNECTING")
+                response = requests.post("http://10.2.6.169:8000/image", json=data)
+                print("AFTER CONNECT")
                 text = response # bör svara med en json fil med vad den tror jag tecknar
             except Exception as e:
                 print(e)
