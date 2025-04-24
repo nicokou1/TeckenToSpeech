@@ -12,8 +12,22 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.ui.Alignment
 
+/**
+ * This class contains all buttons to be shown and used on UI.
+ * @author Farzaneh Ibrahimi & Mimoza Behrami
+ * @since ?
+ */
+
+// Changelog:
+// 2025-04-24 Mimoza Behrami - Tagit bort redundant mainActivity-metod. Anropar knapparna från MainAcitivity-klassen istället.
+// 2025-04-24 Mimoza Behrami - Lagt till JavaDoc.
+
+/**
+ * Clickable button that plays or pauses the printing of letters.
+ * @author Farzaneh Ibrahimi
+ * @since ?
+ */
 @Composable
 fun BottomCenterRoundedButton(modifier: Modifier = Modifier) {
     Button(
@@ -32,6 +46,12 @@ fun BottomCenterRoundedButton(modifier: Modifier = Modifier) {
     }
 }
 
+/**
+ * Clickable button with the symbol of a speaker.
+ * Starts the TTS-translation of letters.
+ * @author Farzaneh Ibrahimi
+ * @since ?
+ */
 @Composable
 fun SpeakerIconButton() {
     IconButton(
@@ -50,6 +70,12 @@ fun SpeakerIconButton() {
     }
 }
 
+/**
+ * Clickable button with the symbol of a trash can.
+ * Deletes the received letters.
+ * @author Farzaneh Ibrahimi
+ * @since ?
+ */
 @Composable
 fun ClearIconButton() {
     IconButton(

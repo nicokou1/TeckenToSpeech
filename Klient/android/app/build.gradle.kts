@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     // 2025-04-14
-    // mimoza har lagt till:
-    kotlin("plugin.serialization") version "1.9.22" //så att man kan använda @serializable
+    // mimoza har lagt till plugin:
+    kotlin("plugin.serialization") version "1.9.22" //kompilatorstöd för @Serializable
 }
 
 android {
@@ -65,19 +65,21 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.6.1")
 
     // 2025-04-14
-    // mimoza har lagt till:
+    // mimoza har lagt till följande beroenden:
     val ktorVersion = "2.3.4"
 
-    // Ktor Client – själva nätverksbiten
+    // Ktor Client - kärnklasser för hantering av HTTP-anrop
     implementation("io.ktor:ktor-client-core:$ktorVersion")
 
-    // "CIO" = en typ av motor som hanterar nätverk – funkar för Android
+    // "CIO" = Co-routine based I/O - nätverksmotor som skickar/tar emot nätverkstrafik
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
 
-    // För att läsa och skriva JSON-data
+    // för att låta klienten driva innehållsförhandling
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+
+    // möjliggör automatisk tolkning av och omvandling från JSON-objekt till kotlin-objekt
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
-    // JSON-bibliotek
+    // hanterar serialisering och deserialisering av JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }

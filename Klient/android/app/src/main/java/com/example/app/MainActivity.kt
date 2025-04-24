@@ -12,23 +12,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
-//2025-04-14
-//mimoza har lagt till följande importer:
 import com.example.app.connection.*
-
 import com.example.app.buttons.*
 
 /**
  * MainActivity is the primary entry point of the application.
  * It is responsible for initializing the UI and setting up necessary components during app startup
  * Also serves as a gateway to the business logic.
- * @author Mimoza Behrami & Farzaneh Ibrahim
+ * @author Mimoza Behrami & Farzaneh Ibrahimi
  * @since 2025-04-14
  */
 
 // Changelog:
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
+// 2025-04-24 Mimoza Behrami - Lagt till knapparna från Buttons i onCreate()
 
 class MainActivity : ComponentActivity() {
 
@@ -38,7 +35,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //composables som ska visas på UI
+        // innehållet i UI
         setContent {
             MaterialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -47,10 +44,10 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
-                        // Visa logiken från ConnectionComposable
+                        // visar logiken från ConnectionComposable
                         connection.ShowLetterOnScreen()
 
-                        // Visa knapparna längst ner
+                        // ställer in och visar knapparna
                         Row(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)

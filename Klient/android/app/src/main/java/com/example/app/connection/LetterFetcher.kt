@@ -15,29 +15,26 @@ import kotlinx.serialization.json.Json
  */
 
 // Changelog:
-// 2025-04-17 Mimoza Behrami - Ändrat URL-adress från testAPI till server
+// 2025-04-17 Mimoza Behrami - Ändrat adress från testAPI till server och testat anslutningen
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 
 /**
  * Suspend functions are used for time consuming operations, such as network communication.
  * It must be called from within a coroutine, which is a lightweight alternative to a thread (java.Thread).
- * .body() is used for deserializing the server response.
+ * .body() is used for deserializing the server response and converting to the return type.
  * @return a list containing Letter-objects
  * @author Mimoza Behrami
  * @since 2024-04-14
  */
 suspend fun fetchLetter(): List<Letter> {
 
-    //skapar HTTP-klient med en CIO-motor (som sköter alla HTTP-anrop)
+    //skapar HTTP-klient, med CIO-motor som hanterar nätverkstrafiken (se build.gradle)
     val client = HttpClient(CIO) {
 
-        //klientdriven innehållsförhandling (HTTP Header "accept: application/json")
+        // klientdriven innehållsförhandling
         install(ContentNegotiation) {
             json(Json { ignoreUnknownKeys = true }) //ignorera eventuella okända fält, förhindrar krasch
         }
     }
-
-    // klienten anropar GET och får ett HTTP Response-objekt som innehåller rådata.
-    // .body() omvandlar datan till en bokstav.
     return client.get("http://10.2.6.169:8000/app").body()
 }
