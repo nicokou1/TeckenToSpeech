@@ -12,6 +12,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 /**
  * This class contains all buttons to be shown and used on UI.
@@ -25,13 +29,14 @@ import androidx.compose.material.icons.filled.Delete
 
 /**
  * Clickable button that plays or pauses the printing of letters.
- * @author Farzaneh Ibrahimi
+ * @author Farzaneh Ibrahimi & Mimoza Behrami
  * @since ?
  */
 @Composable
 fun BottomCenterRoundedButton(modifier: Modifier = Modifier) {
+    var isTranslating by remember { mutableStateOf(false) }
     Button(
-        onClick = { /* TODO: Lägg in din knapplogik här */ },
+        onClick = { isTranslating = !isTranslating }, //växla tillstånd för varje klick
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFFF80B7),
@@ -40,7 +45,7 @@ fun BottomCenterRoundedButton(modifier: Modifier = Modifier) {
         modifier = modifier.size(120.dp)
     ) {
         Text(
-            text = "Översätt",
+            text = if (isTranslating) "Paus" else "Översätt",
             fontSize = 16.sp
         )
     }
