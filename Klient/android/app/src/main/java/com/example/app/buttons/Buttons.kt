@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.VolumeOff
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,11 +27,11 @@ import androidx.compose.runtime.setValue
 // Changelog:
 // 2025-04-24 Mimoza Behrami - Tagit bort redundant mainActivity-metod. Anropar knapparna från MainAcitivity-klassen istället.
 // 2025-04-24 Mimoza Behrami - Lagt till JavaDoc.
-// 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för översättningsknappen
+// 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för översättningsknappen och ljudknappen.
 
 /**
  * Clickable button that plays or pauses the printing of letters.
- * @author Farzaneh Ibrahimi & Mimoza Behrami
+ * @author Farzaneh Ibrahimi
  * @since ?
  */
 @Composable
@@ -60,16 +61,20 @@ fun BottomCenterRoundedButton(modifier: Modifier = Modifier) {
  */
 @Composable
 fun SpeakerIconButton() {
+    var isVolumeOn by remember { mutableStateOf(true) }
+
     IconButton(
-        onClick = { /* TODO: ljud logik */ },
+        onClick = { isVolumeOn = !isVolumeOn }, //växla tillstånd för varje klick
         modifier = Modifier
             .padding(start = 16.dp)
             .size(80.dp)
             .background(Color(0xFFFF80B7), shape = CircleShape)
     ) {
+        @Suppress("DEPRECATION")
+        val icon = if (isVolumeOn) Icons.Filled.VolumeUp else Icons.Filled.VolumeOff
         Icon(
-            imageVector = Icons.Filled.VolumeUp,
-            contentDescription = "Högtalare",
+            imageVector = icon,
+            contentDescription = if (isVolumeOn) "Ljud på" else "Ljud av",
             tint = Color.White,
             modifier = Modifier.size(32.dp)
         )
@@ -94,7 +99,7 @@ fun ClearIconButton() {
     ) {
         Icon(
             imageVector = Icons.Filled.Delete,
-            contentDescription = "Papperskorg",
+            contentDescription = "Radera",
             tint = Color.White,
             modifier = Modifier.size(32.dp)
         )

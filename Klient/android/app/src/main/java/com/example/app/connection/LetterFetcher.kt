@@ -15,7 +15,7 @@ import kotlinx.serialization.json.Json
  */
 
 // Changelog:
-// 2025-04-17 Mimoza Behrami - Ändrat adress från testAPI till server och testat anslutningen
+// 2025-04-17 Mimoza Behrami - Ändrat address från testAPI till server och testat anslutningen
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 
 /**
@@ -28,7 +28,7 @@ import kotlinx.serialization.json.Json
  */
 suspend fun fetchLetter(): List<Letter> {
 
-    //skapar HTTP-klient, med CIO-motor som hanterar nätverkstrafiken (se build.gradle)
+    //skapar HTTP-klient med CIO-motor som hanterar nätverkstrafiken (se build.gradle)
     val client = HttpClient(CIO) {
 
         // klientdriven innehållsförhandling

@@ -77,7 +77,7 @@ dependencies {
     // för att låta klienten driva innehållsförhandling
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
 
-    // möjliggör automatisk tolkning av och omvandling från JSON-objekt till kotlin-objekt
+    // möjliggör automatisk tolkning av och konvertering från JSON-objekt till kotlin-objekt
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // hanterar serialisering och deserialisering av JSON
