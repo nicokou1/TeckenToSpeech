@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 // Changelog:
 // 2025-04-24 Mimoza Behrami - Tagit bort redundant mainActivity-metod. Anropar knapparna från MainAcitivity-klassen istället.
 // 2025-04-24 Mimoza Behrami - Lagt till JavaDoc.
+// 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för översättningsknappen
 
 /**
  * Clickable button that plays or pauses the printing of letters.
