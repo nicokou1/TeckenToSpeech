@@ -44,10 +44,10 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
-                        // visar logiken från ConnectionComposable
+                        // visar hämtad data från servern
                         //connection.ShowLetterOnScreen()
 
-                        // ställer in och visar knapparna
+                        // visar knapparna
                         Row(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
