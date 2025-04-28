@@ -44,8 +44,8 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
-                        // visar hämtad data från servern
-                        //connection.ShowLetterOnScreen()
+                        // visar logiken från ConnectionComposable
+                        connection.ShowLetterOnScreen()
 
                         // visar knapparna
                         Row(
