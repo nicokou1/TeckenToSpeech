@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                     ) {
                         // visar logiken från ConnectionComposable
-                        //connection.ShowLetterOnScreen()
+                        connection.ShowLetterOnScreen()
 
                         // ställer in och visar knapparna
                         Row(
