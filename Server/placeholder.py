@@ -8,8 +8,10 @@ from io import BytesIO
 from starlette.responses import JSONResponse
 
 app = FastAPI()
-# Hela klassen är @author Nicolas K. 2025-04-16
+# Hela klassen är @author Nicolas K, Rawan, Hiyam. 2025-04-28
 # Modell för data som skickas till /interpret
+
+data_storage = []
 class Gesture(BaseModel):
     gesture: str
     confidence: float
@@ -40,8 +42,8 @@ def send_data():
     data = [
     {
         "id":12,
-        "title":"Test123",
-        "body":"TestBody123"
+        "title":"Mimoza",
+        "body":"ärcool123"
     }
     ]
     return JSONResponse(content=data)
@@ -73,4 +75,14 @@ def interpret_gesture(data: Gesture):
         return {
             "text": data.gesture,
             "speech_url": f"https://example.com/sounds/{data.gesture}.mp3"
+        }
+
+@app.post("/upload")
+def upload_gesture(data: Gesture):
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"Trash data :(")
+    else:
+        data_storage.append(data.model_dump())
+        return {
+            "response": "OK!"
         }
