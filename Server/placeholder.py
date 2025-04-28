@@ -86,3 +86,7 @@ def upload_gesture(data: Gesture):
         return {
             "response": "OK!"
         }
+
+@app.get("/fetchData")
+def fetch_data():
+    return data_storage
