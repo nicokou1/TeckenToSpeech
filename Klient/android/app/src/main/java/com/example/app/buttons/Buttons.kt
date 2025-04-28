@@ -41,7 +41,7 @@ fun BottomCenterRoundedButton(modifier: Modifier = Modifier) {
         onClick = { isTranslating = !isTranslating }, //växla tillstånd för varje klick
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFFF80B7),
+            containerColor = Color(0xFFF1AABE),
             contentColor = Color.White
         ),
         modifier = modifier.size(120.dp)
@@ -68,7 +68,7 @@ fun SpeakerIconButton() {
         modifier = Modifier
             .padding(start = 16.dp)
             .size(80.dp)
-            .background(Color(0xFFFF80B7), shape = CircleShape)
+            .background(Color(0xFFF1AABE), shape = CircleShape)
     ) {
         @Suppress("DEPRECATION")
         val icon = if (isVolumeOn) Icons.Filled.VolumeUp else Icons.Filled.VolumeOff
@@ -95,7 +95,7 @@ fun ClearIconButton() {
             .padding(start = 10.dp)
             .offset(x = (-16).dp)
             .size(80.dp)
-            .background(Color(0xFFFF80B7), shape = CircleShape)
+            .background(Color(0xFFF1AABE), shape = CircleShape)
     ) {
         Icon(
             imageVector = Icons.Filled.Delete,
