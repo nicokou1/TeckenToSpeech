@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 // Changelog:
 // 2025-04-16 Mimoza Behrami - Ändrat från testkod till kod som passar för bokstäver
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
-// 2025-04-28 Mimoza Behrami - Lagt till en textruta
+// 2025-04-28 Mimoza Behrami - Lagt till en textruta som hämtad data skrivs ut i
 
 class ConnectionComposable {
 
@@ -38,20 +38,21 @@ class ConnectionComposable {
             fetchedLetter = fetchLetter()
         }
 
-        // En Box för att centrera innehållet
+        // box som centrerar allt innehåll
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
+            // en transparent behållare som fungerar som textruta
             Surface(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .padding(top = 93.dp)
                     .width(334.dp)
                     .height(192.dp),
-                color = Color.White.copy(alpha = 0.2f),
+                color = Color.Transparent,
                 shape = MaterialTheme.shapes.medium
             ) {
-                // Visar bokstäverna i en kolumn
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()

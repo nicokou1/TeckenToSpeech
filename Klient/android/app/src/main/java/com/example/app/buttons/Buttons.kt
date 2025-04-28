@@ -27,7 +27,8 @@ import androidx.compose.runtime.setValue
 // Changelog:
 // 2025-04-24 Mimoza Behrami - Tagit bort redundant mainActivity-metod. Anropar knapparna från MainAcitivity-klassen istället.
 // 2025-04-24 Mimoza Behrami - Lagt till JavaDoc.
-// 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för översättningsknappen och ljudknappen.
+// 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för BottomCenterRoundedButton och SpeakerIconButton.
+// 2025-04-25 Mimoza Behrami & Farzaneh Ibrahimi - Ändrat färger på knappar för att passa till bakgrundsbilden.
 
 /**
  * Clickable button that plays or pauses the printing of letters.
@@ -38,7 +39,7 @@ import androidx.compose.runtime.setValue
 fun BottomCenterRoundedButton(modifier: Modifier = Modifier) {
     var isTranslating by remember { mutableStateOf(false) }
     Button(
-        onClick = { isTranslating = !isTranslating }, //växla tillstånd för varje klick
+        onClick = { isTranslating = !isTranslating },
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFF1AABE),

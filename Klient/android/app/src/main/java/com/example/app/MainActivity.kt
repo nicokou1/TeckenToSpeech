@@ -26,6 +26,7 @@ import com.example.app.connection.ConnectionComposable
 // Changelog:
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 // 2025-04-24 Mimoza Behrami - Lagt till knapparna från Buttons i onCreate()
+// 2025-04-28 Farzaneh Ibrahimi - Lagt till bakgrundsbild
 
 class MainActivity : ComponentActivity() {
 
