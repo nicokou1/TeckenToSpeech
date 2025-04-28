@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 // Changelog:
 // 2025-04-16 Mimoza Behrami - Ändrat från testkod till kod som passar för bokstäver
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
+// 2025-04-28 Mimoza Behrami - Lagt till en textruta
 
 class ConnectionComposable {
 
@@ -39,25 +40,22 @@ class ConnectionComposable {
 
         // En Box för att centrera innehållet
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize()
         ) {
-            // En genomskinlig Surface (container)
             Surface(
                 modifier = Modifier
-                    .width(334.dp)
-                    .height(192.dp)
+                    .align(Alignment.TopCenter)
                     .padding(top = 93.dp)
-                    .align(Alignment.TopCenter),
+                    .width(334.dp)
+                    .height(192.dp),
                 color = Color.White.copy(alpha = 0.2f),
-                shadowElevation = 0.dp,
                 shape = MaterialTheme.shapes.medium
             ) {
                 // Visar bokstäverna i en kolumn
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(8.dp) // lite innerpadding
+                        .padding(8.dp)
                 ) {
                     items(fetchedLetter) { letter ->
                         Column(modifier = Modifier.padding(bottom = 8.dp)) {

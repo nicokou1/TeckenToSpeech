@@ -36,5 +36,5 @@ suspend fun fetchLetter(): List<Letter> {
             json(Json { ignoreUnknownKeys = true }) //ignorera eventuella okända fält, förhindrar krasch
         }
     }
-    return client.get("http://10.2.7.33:8000/app").body()
+    return client.get("http://51.21.222.0:8000/app").body()
 }

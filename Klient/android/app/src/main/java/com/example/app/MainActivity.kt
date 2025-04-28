@@ -44,15 +44,15 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
-                        // visar logiken från ConnectionComposable
-                        //connection.ShowLetterOnScreen()
-
                         Image(
                             painter = painterResource(id = R.drawable.img),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
+
+                        // visar logiken från ConnectionComposable
+                        connection.ShowLetterOnScreen()
 
                         // visar knapparna
                         Row(
