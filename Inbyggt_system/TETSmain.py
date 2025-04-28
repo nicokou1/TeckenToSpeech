@@ -10,52 +10,14 @@ from PIL import Image
 from io import BytesIO
 import json
 import base64
+import tkinter as tk
+from tkinter import messagebox
+import sys
+import TETSserver
 
 # Global variables
 text = "" # Top text
 connect = False # is connected to the server
-fps = 10 # the fps of the video sent to the server.
-urlmain = "http://10.1.1.106:8000"
-
-# Server method
-def server_method():
-    global text
-    global connect
-    global fps
-    global urlmain
-    count = 0
-    while True:
-        if connect:
-            # Capture the image as a NumPy array
-            image_array = picam2.capture_array()
-
-            image_array_rgb = image_array[..., ::-1]  # This reverses the BGR channels to RGB
-
-            # Convert the NumPy array to a PIL Image
-            image = Image.fromarray(image_array_rgb)
-            
-            buffer = BytesIO()
-            image.save(buffer, format='JPEG', quality=1) # Compressed
-
-            # Encode the image to base64
-            encoded_image = base64.b64encode(buffer.getvalue()).decode('utf-8')
-            
-            data = {
-                "picture":encoded_image
-            }
-
-            url = urlmain+"/image"
-            try:
-                print("CONNECTING")
-                response = requests.post("http://10.2.6.169:8000/image", json=data)
-                print("AFTER CONNECT")
-                text = response # bör svara med en json fil med vad den tror jag tecknar
-            except Exception as e:
-                print(e)
-        else:
-            text = ""
-        time.sleep(1 / fps) # changed from 1 / fps to 10
-
 
 # Mouse callback to detect button click
 def mouse_callback(event, x, y, flags, param):
@@ -75,28 +37,34 @@ screen_width = screen.width_in_pixels
 screen_height = screen.height_in_pixels
 
 print(f"Screen Resolution: {screen_width}x{screen_height}")
+try:
+    picam2 = Picamera2()
 
-picam2 = Picamera2()
+    # Get the camera resolution
+    camera_resolution = picam2.preview_configuration.main.size
+    camera_width = camera_resolution[0]
+    camera_height = camera_resolution[1]
 
-# Get the camera resolution
-camera_resolution = picam2.preview_configuration.main.size
-camera_width = camera_resolution[0]
-camera_height = camera_resolution[1]
+    print(f"Camera Resolution: {camera_width}x{camera_height}")
 
-print(f"Camera Resolution: {camera_width}x{camera_height}")
+    # Calculate the camera resolution based on screen size
+    camera_multiplier = screen_width / camera_width
 
-# Calculate the camera resolution based on screen size
-camera_multiplier = screen_width / camera_width
+    calculated_width = int(camera_width * camera_multiplier)
+    calculated_height = int(camera_height * camera_multiplier)
 
-calculated_width = int(camera_width * camera_multiplier)
-calculated_height = int(camera_height * camera_multiplier)
+    print(f"Calculated Camera Resolution: {calculated_width}x{calculated_height}")
 
-print(f"Calculated Camera Resolution: {calculated_width}x{calculated_height}")
+    # Configure the camera
+    config = picam2.create_preview_configuration({"format": "RGB888", "size": (calculated_width, calculated_height)}, transform=Transform(hflip=True))
+    picam2.configure(config)
+    picam2.start()
+except:
+    root = tk.Tk()
+    root.withdraw()
+    messagebox.showinfo("Camera Error.", "Please make sure camera is connected and working.")
+    sys.exit()
 
-# Configure the camera
-config = picam2.create_preview_configuration({"format": "RGB888", "size": (calculated_width, calculated_height)}, transform=Transform(hflip=True))
-picam2.configure(config)
-picam2.start()
 
 # OpenCV window setup
 window_name = "TeTS Fullscreen"
@@ -141,10 +109,14 @@ def draw_button(frame):
     cv2.putText(frame, buttontext, (button_x1 + padding_x, button_y1 + padding_y + size[0][1]), 
             cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
 
-# Start the server method in a separate thread
-server_thread = threading.Thread(target=server_method)
-server_thread.daemon = True  # Ensures thread stops when the program exits
-server_thread.start()
+# Check if i am connected, or i can even get the status.
+if TETSserver.checkConnection(): # TODO REPLACE WITH BUTTON LATER!
+    # Start the server thread if i can call the server.
+    server_thread = threading.Thread(target=TETSserver.server_method)
+    server_thread.daemon = True
+    server_thread.start()
+else:
+    print("Cannot connect to server.")
 
 # Set mouse callback to handle button clicks
 cv2.setMouseCallback(window_name, mouse_callback)
