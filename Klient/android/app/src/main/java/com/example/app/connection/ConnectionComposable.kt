@@ -3,6 +3,7 @@ package com.example.app.connection
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -41,13 +42,16 @@ class ConnectionComposable {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            // En genomskinlig Surface (container) för texterna
+            // En genomskinlig Surface (container)
             Surface(
                 modifier = Modifier
                     .width(334.dp)
-                    .height(192.dp),
-                color = Color.Transparent,
-                shadowElevation = 0.dp
+                    .height(192.dp)
+                    .padding(top = 93.dp)
+                    .align(Alignment.TopCenter),
+                color = Color.White.copy(alpha = 0.2f),
+                shadowElevation = 0.dp,
+                shape = MaterialTheme.shapes.medium
             ) {
                 // Visar bokstäverna i en kolumn
                 LazyColumn(

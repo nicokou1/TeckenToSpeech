@@ -3,17 +3,17 @@ package com.example.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.app.connection.*
 import com.example.app.buttons.*
+import com.example.app.connection.ConnectionComposable
 
 /**
  * MainActivity is the primary entry point of the application.
@@ -45,7 +45,14 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                     ) {
                         // visar logiken från ConnectionComposable
-                        connection.ShowLetterOnScreen()
+                        //connection.ShowLetterOnScreen()
+
+                        Image(
+                            painter = painterResource(id = R.drawable.img),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
 
                         // visar knapparna
                         Row(
