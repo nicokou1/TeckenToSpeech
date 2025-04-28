@@ -12,14 +12,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.app.buttons.* // För dina knappar
+import com.example.app.buttons.*
 import com.example.app.connection.ConnectionComposable
+
+/**
+ * MainActivity is the primary entry point of the application.
+ * It is responsible for initializing the UI and setting up necessary components during app startup
+ * Also serves as a gateway to the business logic.
+ * @author Mimoza Behrami & Farzaneh Ibrahimi
+ * @since 2025-04-14
+ */
+
+// Changelog:
+// 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
+// 2025-04-24 Mimoza Behrami - Lagt till knapparna från Buttons i onCreate()
 
 class MainActivity : ComponentActivity() {
 
     var connection: ConnectionComposable = ConnectionComposable()
 
-    // onCreate är alltid det första som körs då appen öppnas
+    //onCreate är alltid det första som körs då appen öppnas
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,7 +44,9 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
-                        // Här lägger vi till bakgrundsbilden
+                        // visar logiken från ConnectionComposable
+                        //connection.ShowLetterOnScreen()
+
                         Image(
                             painter = painterResource(id = R.drawable.img),
                             contentDescription = null,
@@ -40,7 +54,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxSize()
                         )
 
-                        // Ställer in och visar knapparna
+                        // visar knapparna
                         Row(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)

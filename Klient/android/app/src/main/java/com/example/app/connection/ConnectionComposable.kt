@@ -1,15 +1,17 @@
 package com.example.app.connection
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+
 
 /**
  * This class includes functions for showing letters on the UI.
@@ -30,19 +32,40 @@ class ConnectionComposable {
             mutableStateOf<List<Letter>>(emptyList())
         }
 
-        // startar en coroutine som kör fetchLetter()
+        // startar en coroutine som hämtar datan
         LaunchedEffect(Unit) {
             fetchedLetter = fetchLetter()
         }
 
-        // items = generisk lista som elementen placeras i.
-        // för varje element, skriv ut ID och letter i UI
-        LazyColumn {
-            items(fetchedLetter) { fetchedLetter ->
-                Column {
-                    Text(text = "ID: ${fetchedLetter.id}")
-                    Text(text = "Titel: ${fetchedLetter.title}")
-                    Text(text = "Innehåll: ${fetchedLetter.body}")
+        // En Box för att centrera innehållet
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            // En genomskinlig Surface (container)
+            Surface(
+                modifier = Modifier
+                    .width(334.dp)
+                    .height(192.dp)
+                    .padding(top = 93.dp)
+                    .align(Alignment.TopCenter),
+                color = Color.White.copy(alpha = 0.2f),
+                shadowElevation = 0.dp,
+                shape = MaterialTheme.shapes.medium
+            ) {
+                // Visar bokstäverna i en kolumn
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp) // lite innerpadding
+                ) {
+                    items(fetchedLetter) { letter ->
+                        Column(modifier = Modifier.padding(bottom = 8.dp)) {
+                            Text(text = "ID: ${letter.id}")
+                            Text(text = "Titel: ${letter.title}")
+                            Text(text = "Innehåll: ${letter.body}")
+                        }
+                    }
                 }
             }
         }
