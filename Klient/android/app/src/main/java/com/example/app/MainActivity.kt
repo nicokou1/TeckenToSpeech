@@ -7,13 +7,20 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.app.buttons.*
-import com.example.app.connection.ConnectionComposable
+import com.example.app.connection.LetterOutput
+import com.example.app.connection.Letter
+import com.example.app.connection.fetchLetter
 
 /**
  * MainActivity is the primary entry point of the application.
@@ -30,7 +37,7 @@ import com.example.app.connection.ConnectionComposable
 
 class MainActivity : ComponentActivity() {
 
-    var connection: ConnectionComposable = ConnectionComposable()
+    var connection: LetterOutput = LetterOutput()
 
     //onCreate är alltid det första som körs då appen öppnas
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +45,16 @@ class MainActivity : ComponentActivity() {
 
         // innehållet i UI
         setContent {
+
+            var fetchedLetter by remember {
+                mutableStateOf<List<Letter>>(emptyList())
+            }
+
+            // startar en coroutine som hämtar datan
+            LaunchedEffect(Unit) {
+                fetchedLetter = fetchLetter()
+            }
+
             MaterialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(
@@ -53,7 +70,7 @@ class MainActivity : ComponentActivity() {
                         )
 
                         // visar logiken från ConnectionComposable
-                        connection.ShowLetterOnScreen()
+                        connection.ShowLetterOnScreen(fetchedLetter)
 
                         // visar knapparna
                         Row(
@@ -62,7 +79,7 @@ class MainActivity : ComponentActivity() {
                                 .padding(bottom = 16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            ClearIconButton()
+                            ClearIconButton(onClear = { fetchedLetter = emptyList() })
                             BottomCenterRoundedButton()
                             SpeakerIconButton()
                         }

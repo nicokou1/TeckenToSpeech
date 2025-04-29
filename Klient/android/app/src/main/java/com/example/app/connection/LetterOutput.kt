@@ -25,19 +25,10 @@ import androidx.compose.ui.unit.dp
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 // 2025-04-28 Mimoza Behrami - Lagt till en textruta som hämtad data skrivs ut i
 
-class ConnectionComposable {
+class LetterOutput {
 
     @Composable
-    fun ShowLetterOnScreen() {
-        var fetchedLetter by remember {
-            mutableStateOf<List<Letter>>(emptyList())
-        }
-
-        // startar en coroutine som hämtar datan
-        LaunchedEffect(Unit) {
-            fetchedLetter = fetchLetter()
-        }
-
+    fun ShowLetterOnScreen(fetchedLetter: List<Letter>) {
         // box som centrerar allt innehåll
         Box(
             modifier = Modifier.fillMaxSize()

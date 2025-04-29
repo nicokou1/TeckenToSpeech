@@ -89,9 +89,9 @@ fun SpeakerIconButton() {
  * @since ?
  */
 @Composable
-fun ClearIconButton() {
+fun ClearIconButton(onClear : () -> Unit) {
     IconButton(
-        onClick = { /* TODO: rensa logik */ },
+        onClick = { onClear() },
         modifier = Modifier
             .padding(start = 10.dp)
             .offset(x = (-16).dp)
