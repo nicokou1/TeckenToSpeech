@@ -29,20 +29,18 @@ class ConnectionComposable {
 
     @Composable
     fun ShowLetterOnScreen() {
-        var fetchedLetter by remember {
-            mutableStateOf<List<Letter>>(emptyList())
-        }
+        // Skapa en Buffer för att lagra data av typ Letter och hämta data automatiskt
+        val letterBuffer = remember { Buffer { fetchLetter() } }
 
-        // startar en coroutine som hämtar datan
-        LaunchedEffect(Unit) {
-            fetchedLetter = fetchLetter()
-        }
+        // Variabel för att hålla den hämtade datan
+        // Hämta datan från Buffer och spara den i fetchedLetter
+        val fetchedLetter by remember { mutableStateOf(letterBuffer.getAll()) }
 
-        // box som centrerar allt innehåll
+        // Box som centrerar allt innehåll
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            // en transparent behållare som fungerar som textruta
+            // En transparent behållare som fungerar som textruta
             Surface(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
@@ -53,6 +51,7 @@ class ConnectionComposable {
                 shape = MaterialTheme.shapes.medium
             ) {
 
+                // LazyColumn för att visa alla objekt i fetchedLetter
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
