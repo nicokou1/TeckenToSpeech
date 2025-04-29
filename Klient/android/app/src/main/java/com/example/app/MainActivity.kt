@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.app.buttons.*
+import com.example.app.connection.Buffer
 import com.example.app.connection.LetterOutput
 import com.example.app.connection.Letter
 import com.example.app.connection.fetchLetter
@@ -46,14 +47,11 @@ class MainActivity : ComponentActivity() {
         // innehållet i UI
         setContent {
 
-            var fetchedLetter by remember {
-                mutableStateOf<List<Letter>>(emptyList())
-            }
+            val letterBuffer = remember { Buffer { fetchLetter() } }
 
-            // startar en coroutine som hämtar datan
-            LaunchedEffect(Unit) {
-                fetchedLetter = fetchLetter()
-            }
+            // Variabel för att hålla den hämtade datan
+            // Hämta datan från Buffer och spara den i fetchedLetter
+            var fetchedLetter by remember { mutableStateOf(letterBuffer.getAll()) }
 
             MaterialTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

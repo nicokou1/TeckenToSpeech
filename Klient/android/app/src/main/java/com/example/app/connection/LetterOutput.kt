@@ -28,14 +28,7 @@ import androidx.compose.ui.unit.dp
 class LetterOutput {
 
     @Composable
-    fun ShowLetterOnScreen() {
-        // Skapa en Buffer för att lagra data av typ Letter och hämta data automatiskt
-        val letterBuffer = remember { Buffer { fetchLetter() } }
-
-        // Variabel för att hålla den hämtade datan
-        // Hämta datan från Buffer och spara den i fetchedLetter
-        val fetchedLetter by remember { mutableStateOf(letterBuffer.getAll()) }
-
+    fun ShowLetterOnScreen(fetchedLetter: List<Letter>) {
         // Box som centrerar allt innehåll
         Box(
             modifier = Modifier.fillMaxSize()
