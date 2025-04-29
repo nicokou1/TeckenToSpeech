@@ -28,12 +28,19 @@ import androidx.compose.ui.unit.dp
 class LetterOutput {
 
     @Composable
-    fun ShowLetterOnScreen(fetchedLetter: List<Letter>) {
-        // box som centrerar allt innehåll
+    fun ShowLetterOnScreen() {
+        // Skapa en Buffer för att lagra data av typ Letter och hämta data automatiskt
+        val letterBuffer = remember { Buffer { fetchLetter() } }
+
+        // Variabel för att hålla den hämtade datan
+        // Hämta datan från Buffer och spara den i fetchedLetter
+        val fetchedLetter by remember { mutableStateOf(letterBuffer.getAll()) }
+
+        // Box som centrerar allt innehåll
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            // en transparent behållare som fungerar som textruta
+            // En transparent behållare som fungerar som textruta
             Surface(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
@@ -44,6 +51,7 @@ class LetterOutput {
                 shape = MaterialTheme.shapes.medium
             ) {
 
+                // LazyColumn för att visa alla objekt i fetchedLetter
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
