@@ -11,12 +11,13 @@ from datetime import datetime
 
 app = FastAPI()
 # Hela klassen är @author Nicolas K, Rawan, Hiyam. 2025-04-28
-# Modell för data som skickas till /interpret
+
 http_log = deque(maxlen=20)
 data_storage = []
 class Gesture(BaseModel):
     gesture: str
     confidence: float
+
 # Modell för data som ska hämtas med /image
 class ImageInput(BaseModel):
     picture: str
@@ -26,6 +27,9 @@ class AppInput(BaseModel):
     title: str
     body: str
 
+# Metod som fångar upp HTTP metodanrops meddelanden
+# Som sedan lagras i en lista som i sin höjd har de
+# 20 senaste anropen.
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     response = await call_next(request)
@@ -42,7 +46,9 @@ async def log_requests(request: Request, call_next):
 
 health_router = APIRouter(prefix="/health")
 
-# Checkar status.
+# Checkar status på Servern.
+# Om Servern är aktiv skickas vårt returmeddelande
+# Annars felkod.
 @health_router.get("/status")
 def get_status():
     return {"status": "API is alive!"}
@@ -53,11 +59,14 @@ def get_http_history():
 
 app.include_router(health_router)
 
-
+# Metod som skickar användaren till dokumentations sidan.
 @app.get("/")
 def redirect_to_docs():
     return RedirectResponse(url="/docs")
 
+# Metod där Klienten hämtar fejk data i form av JSON.
+# Vid riktig implementation skall fejk datan vara den data
+# vi får från det Inbyggda systemet.
 @app.get("/app")
 def send_data():
     data = [
@@ -69,6 +78,8 @@ def send_data():
     ]
     return JSONResponse(content=data)
 
+# Test metod där Inbyggda systemet skickar en bild till server
+# I sin tur decodear Servern bilden och visar den.
 @app.post("/image")
 def image_gesture(data: ImageInput):
     if data is None:
@@ -78,18 +89,9 @@ def image_gesture(data: ImageInput):
         image = Image.open(BytesIO(image_data))
         image.show()
 
-#test
-# API för att tolka gest
-@app.post("/interpret")
-def interpret_gesture(data: Gesture):
-    if data is None:
-        raise HTTPException(status_code=404, detail=f"Item not found")
-    else:
-        return {
-            "text": data.gesture,
-            "speech_url": f"https://example.com/sounds/{data.gesture}.mp3"
-        }
-
+# Metod där Inbyggda systemet skickar data till Server
+# Om datan är null == Felmeddelande
+# Annars lagras datan och svarar med OK!
 @app.post("/upload")
 def upload_gesture(data: Gesture):
     if data is None:
@@ -100,6 +102,7 @@ def upload_gesture(data: Gesture):
             "response": "OK!"
         }
 
+# Metod som hämtar & returnerar lagrad data
 @app.get("/fetch")
 def fetch_data():
     return data_storage
