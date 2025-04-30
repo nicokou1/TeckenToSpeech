@@ -1,4 +1,4 @@
-package com.example.app.buttons
+package com.example.app.composables
 
 import com.example.app.connection.*
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package com.example.app.buttons
+package com.example.app.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

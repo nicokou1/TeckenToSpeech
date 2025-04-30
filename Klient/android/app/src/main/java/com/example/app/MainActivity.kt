@@ -17,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.app.buttons.*
+import com.example.app.composables.*
 import com.example.app.connection.Buffer
-import com.example.app.connection.LetterOutput
+import com.example.app.composables.LetterOutput
 import com.example.app.connection.Letter
 import com.example.app.connection.fetchLetter
 import androidx.compose.material.ModalDrawer
