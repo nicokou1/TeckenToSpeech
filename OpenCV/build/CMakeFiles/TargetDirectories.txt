@@ -1,0 +1,3 @@
+/home/viktor/kurser/da393a-projekt/OpenCV/build/CMakeFiles/hand_gesture.dir
+/home/viktor/kurser/da393a-projekt/OpenCV/build/CMakeFiles/edit_cache.dir
+/home/viktor/kurser/da393a-projekt/OpenCV/build/CMakeFiles/rebuild_cache.dir
