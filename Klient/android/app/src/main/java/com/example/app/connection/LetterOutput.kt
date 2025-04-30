@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 
 /**
  * This class includes functions for showing letters on the UI.
- * Includes a coroutine for running suspended functions in the background.
  * @author Mimoza Behrami
  * @since 2025-04-14
  */
@@ -44,7 +43,7 @@ class LetterOutput {
                 shape = MaterialTheme.shapes.medium
             ) {
 
-                // LazyColumn för att visa alla objekt i fetchedLetter
+                // visa alla objekt i det inskickade argumentet
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()

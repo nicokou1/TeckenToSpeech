@@ -64,6 +64,9 @@ dependencies {
     //FARZANEH IBRAHIMI 2025-04-16
     implementation("androidx.compose.material:material-icons-extended:1.6.1")
 
+    // 2025-04-30 Mimoza har lagt till:
+    implementation("androidx.compose.material:material:1.6.1")
+
     // 2025-04-14
     // mimoza har lagt till följande beroenden:
     val ktorVersion = "2.3.4"
