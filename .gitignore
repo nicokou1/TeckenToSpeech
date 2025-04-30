@@ -3,5 +3,6 @@
 venv/
 __pycache__/
 *.iml
+./OpenCV/build/hand_gesture
 
 .idea/misc.xml
