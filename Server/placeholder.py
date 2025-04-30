@@ -1,16 +1,18 @@
 import base64
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, APIRouter, Request
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from PIL import Image
 from io import BytesIO
-
+from collections import deque
 from starlette.responses import JSONResponse
+from datetime import datetime
 
 app = FastAPI()
 # Hela klassen är @author Nicolas K, Rawan, Hiyam. 2025-04-28
 # Modell för data som skickas till /interpret
-
+http_log = deque(maxlen=20)
 data_storage = []
 class Gesture(BaseModel):
     gesture: str
@@ -24,19 +26,38 @@ class AppInput(BaseModel):
     title: str
     body: str
 
-# Test-endpoint för att kolla om servern lever
-@app.get("/status")
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    response = await call_next(request)
+
+    http_log.append({
+        "timestamp": datetime.now().isoformat(),
+        "method": request.method,
+        "path": request.url.path,
+        "status_code": response.status_code
+    })
+
+    return response
+
+
+health_router = APIRouter(prefix="/health")
+
+# Checkar status.
+@health_router.get("/status")
 def get_status():
     return {"status": "API is alive!"}
 
-def send_datatest():
-    data = [
-        {
-            "gesture":"A",
-            "confidence": 0.93
-        }
-    ]
-    return JSONResponse(content=data)
+@health_router.get("/history")
+def get_http_history():
+    return list(http_log)
+
+app.include_router(health_router)
+
+
+@app.get("/")
+def redirect_to_docs():
+    return RedirectResponse(url="/docs")
+
 @app.get("/app")
 def send_data():
     data = [
@@ -47,14 +68,6 @@ def send_data():
     }
     ]
     return JSONResponse(content=data)
-@app.get("/")
-def try_gesture(data: Gesture):
-    return {
-        interpret_gesture(data)
-    }
-@app.post("/test")
-def test_image():
-    return send_datatest()
 
 @app.post("/image")
 def image_gesture(data: ImageInput):
@@ -87,6 +100,6 @@ def upload_gesture(data: Gesture):
             "response": "OK!"
         }
 
-@app.get("/fetchData")
+@app.get("/fetch")
 def fetch_data():
     return data_storage
