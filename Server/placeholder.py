@@ -13,7 +13,7 @@ app = FastAPI()
 # Hela klassen är @author Nicolas K, Rawan, Hiyam. 2025-04-28
 
 http_log = deque(maxlen=20)
-data_storage = []
+data_storage = deque(maxlen=10)
 class Gesture(BaseModel):
     gesture: str
     confidence: float
@@ -36,6 +36,7 @@ async def log_requests(request: Request, call_next):
 
     http_log.append({
         "timestamp": datetime.now().isoformat(),
+        "ip": request.client.host,
         "method": request.method,
         "path": request.url.path,
         "status_code": response.status_code
@@ -84,10 +85,10 @@ def send_data():
 def image_gesture(data: ImageInput):
     if data is None:
         raise HTTPException(status_code=404, detail=f"Item not found")
-    else:
-        image_data = base64.b64decode(data.picture)
-        image = Image.open(BytesIO(image_data))
-        image.show()
+    #else:
+        #image_data = base64.b64decode(data.picture)
+        #image = Image.open(BytesIO(image_data))
+        #image.show()
 
 # Metod där Inbyggda systemet skickar data till Server
 # Om datan är null == Felmeddelande
