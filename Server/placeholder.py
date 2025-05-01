@@ -36,7 +36,6 @@ async def log_requests(request: Request, call_next):
 
     http_log.append({
         "timestamp": datetime.now().isoformat(),
-        "ip": request.client.host,
         "method": request.method,
         "path": request.url.path,
         "status_code": response.status_code
