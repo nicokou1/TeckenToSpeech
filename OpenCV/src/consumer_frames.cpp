@@ -4,6 +4,7 @@
 #include <iostream>
 #include <opencv4/opencv2/opencv.hpp>
 #include <semaphore.h>
+#include <string>
 #include <sys/mman.h>
 #include <system_error>
 #include <unistd.h>
@@ -136,10 +137,14 @@ private:
     cv::waitKey(1);
   }
 
-  const std::string &process_frame() {
+  const std::string process_frame() {
     // TODO: implement the processing logic here
 
     cv::Mat blur, mask, finished;
+
+    std::string letter = "";
+
+    return letter;
   }
 
 public:
