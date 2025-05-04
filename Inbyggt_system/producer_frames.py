@@ -1,12 +1,19 @@
 import os
 import mmap
+from typing import Any
 import posix_ipc
 import numpy as np
 import picamera2
 
 
-
 class frame_producer:
+    """
+    This class starts the picamera with a given config, creates the shared memory region,
+    creates the semphores for doing proper synchronization. It also cleans up resources when exiting the script
+    by KeyboardInterrupt
+
+    @Author Viktor Vallmark
+    """
     def __init__(self, resolution=(640,480), picformat="RGB888",
                  shm_name="/cv_frame", sem_empty="/sem_empty",
                  sem_full="/sem_full"):
@@ -21,9 +28,6 @@ class frame_producer:
         self.setup_semaphores()
 
     def setup_shared_memory(self):
-        """
-        hello
-        """
         self.channels = 3
         self.header_size = 12
         self.frame_size = self.width * self.height * self.channels
@@ -80,7 +84,7 @@ class frame_producer:
                 self.shm_map.write(frame.tobytes())
                 
                 self.sem_full.release()
-                yield frame                
+                yield frame
 
         except KeyboardInterrupt:
             self.close()
