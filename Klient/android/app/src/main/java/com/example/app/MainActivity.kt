@@ -33,6 +33,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 
+// HEJ HEJ!
 
 class MainActivity : ComponentActivity() {
 
@@ -61,10 +62,10 @@ fun PostListScreen() {
     // för varje element, skriv ut title i UI
     LazyColumn {
         items(posts) { post ->
-            Text(
-                text = post.title,
-                color = Color.Blue,
-                fontSize = 15.sp)
+            Column {
+                Text(text = "ID: ${post.id}")
+                Text(text = "Bokstav: ${post.letter}")
+            }
         }
     }
 }
