@@ -30,29 +30,42 @@ import androidx.compose.runtime.setValue
 // 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för BottomCenterRoundedButton och SpeakerIconButton.
 // 2025-04-25 Mimoza Behrami & Farzaneh Ibrahimi - Ändrat färger på knappar för att passa till bakgrundsbilden.
 
+
 /**
- * Clickable button that plays or pauses the printing of letters.
+ * En knapp som växlar mellan "Översätt" och "Paus" beroende på tillståndet för översättning.
+ * När knappen klickas, anropas `onClick`-funktionen som skickas in som parameter.
+ *
+ * @param isTranslating Tillstånd som bestämmer om knappen ska visa "Paus" eller "Översätt".
+ * @param onClick Funktion som anropas när knappen klickas. Här definieras vad som händer vid klick.
+ * @param modifier Modifier som kan användas för att anpassa knappens utseende eller placering.
  * @author Farzaneh Ibrahimi
- * @since ?
  */
 @Composable
-fun BottomCenterRoundedButton(modifier: Modifier = Modifier) {
-    var isTranslating by remember { mutableStateOf(false) }
+fun BottomCenterRoundedButton(
+    isTranslating: Boolean, // Tillståndet som styr knappens text ("Paus" eller "Översätt")
+    onClick: () -> Unit,    // Funktion som anropas vid knapptryck
+    modifier: Modifier = Modifier // Modifier som kan användas för att anpassa knappens storlek och position
+) {
     Button(
-        onClick = { isTranslating = !isTranslating },
-        shape = CircleShape,
+        onClick = onClick, // När knappen klickas, anropas `onClick`-funktionen
+        shape = CircleShape, // Sätter knappens form till en cirkel
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFF1AABE),
-            contentColor = Color.White
+            containerColor = Color(0xFFF1AABE), // Bakgrundsfärg för knappen
+            contentColor = Color.White // Textfärg på knappen
         ),
-        modifier = modifier.size(120.dp)
+        modifier = modifier.size(120.dp) // Sätter knappens storlek till 120dp
     ) {
+        // Innehållet i knappen, en text som växlar mellan "Översätt" och "Paus" beroende på tillståndet
         Text(
-            text = if (isTranslating) "Paus" else "Översätt",
-            fontSize = 16.sp
+            text = if (isTranslating) "Paus" else "Översätt", // Visar "Paus" om isTranslating är true, annars "Översätt"
+            fontSize = 16.sp // Sätter textens storlek till 16sp
         )
     }
 }
+
+
+
+
 
 /**
  * Clickable button with the symbol of a speaker.

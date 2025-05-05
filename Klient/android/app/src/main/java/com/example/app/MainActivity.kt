@@ -27,6 +27,7 @@ import androidx.compose.material.DrawerValue
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job // 🆕 Import för Job, så vi kan hantera nätverksanrop
 
 /**
  * MainActivity is the primary entry point of the application.
@@ -53,11 +54,13 @@ class MainActivity : ComponentActivity() {
         // innehållet i UI
         setContent {
 
-            val letterBuffer = remember { Buffer { fetchLetter() } }
-            var fetchedLetter by remember { mutableStateOf(letterBuffer.getAll()) }
+            var letterBuffer: Buffer<Letter>? = null
+            var fetchedLetter by remember { mutableStateOf(emptyList<Letter>()) } // 🆕 Starta tomt
             val historyList = remember { mutableStateListOf<Letter>() }
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
+            var isTranslating by remember { mutableStateOf(false) }
+
 
             ModalDrawer(
                 drawerState = drawerState,
@@ -96,7 +99,41 @@ class MainActivity : ComponentActivity() {
                                     fetchedLetter = emptyList()
                                     scope.launch { drawerState.open() }
                                 })
-                                BottomCenterRoundedButton()
+
+
+                                /*
+                                Job: När vi gör nätverksanropet (med fetchLetter())
+                                sparar vi det i en variabel (fetchJob). Då kan vi senare
+                                avbryta detta nätverksanrop om användaren trycker på "Paus".
+
+                                Avbryt anropet: När användaren trycker på "Paus",
+                                 avbryts eventuellt pågående nätverksanrop genom fetchJob?.cancel().
+                                 */
+
+                                // Vi kan skapa en Job för att hålla koll på vårt pågående nätverksanrop
+                                var fetchJob: Job? = null
+
+                                BottomCenterRoundedButton(
+                                    isTranslating = isTranslating,
+                                    onClick = {
+                                        if (isTranslating) {
+                                            //  Om knappen visar "Paus" så kan vi stoppa den pågående hämtningsprocessen
+                                            fetchJob?.cancel()  // Avbryt pågående jobb om vi pausat
+                                        } else {
+                                            // skapa nuffern här
+                                            if (letterBuffer == null) {
+                                                letterBuffer = Buffer { fetchLetter() }
+                                            }
+                                            //  Om knappen visar "Översätt", hämta bokstäver från servern
+                                            fetchJob = scope.launch {
+                                                val newLetters = fetchLetter()  // Hämtar bokstäver
+                                                fetchedLetter = newLetters  // Uppdaterar skärmen med nya bokstäver
+                                            }
+                                        }
+                                        isTranslating = !isTranslating  // Växla mellan "Översätt" och "Paus"
+                                    }
+                                )
+
                                 SpeakerIconButton()
                             }
                         }

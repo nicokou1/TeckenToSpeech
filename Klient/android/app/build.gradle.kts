@@ -85,4 +85,5 @@ dependencies {
 
     // hanterar serialisering och deserialisering av JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
 }
