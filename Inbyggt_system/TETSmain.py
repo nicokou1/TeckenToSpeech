@@ -110,6 +110,8 @@ def draw_button(frame):
             cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
 
 # Check if i am connected, or i can even get the status.
+
+"""
 if TETSserver.checkConnection(): # TODO REPLACE WITH BUTTON LATER!
     # Start the server thread if i can call the server.
     server_thread = threading.Thread(target=TETSserver.server_method)
@@ -117,7 +119,7 @@ if TETSserver.checkConnection(): # TODO REPLACE WITH BUTTON LATER!
     server_thread.start()
 else:
     print("Cannot connect to server.")
-
+"""
 # Set mouse callback to handle button clicks
 cv2.setMouseCallback(window_name, mouse_callback)
 
@@ -130,7 +132,7 @@ while True:
     
     # Crop the frame
     frame = frame[y1:y2, :]
-    
+    print("Shape: ",frame.shape, "Type: ", frame.dtype)
 
     # Draw the button
     draw_button(frame)
