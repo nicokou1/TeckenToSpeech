@@ -50,6 +50,7 @@ class LetterOutput {
                         .fillMaxSize()
                         .padding(8.dp)
                 ) {
+                    //datan som skrivs ut
                     items(fetchedLetter) { letter ->
                         Column(modifier = Modifier.padding(bottom = 8.dp)) {
                             Text(text = "ID: ${letter.id}")

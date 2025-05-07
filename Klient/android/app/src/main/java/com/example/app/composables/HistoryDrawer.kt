@@ -13,6 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Composable for the history drawer.
+ * Contains all the content of the history drawer.
+ * @param <kommentar>
+ * @author Mimoza Behrami
+ * @since 2025-04-30
+ */
 
 @Composable
 fun HistoryDrawerContent(historyList: List<Letter>, onClose: () -> Unit) {
@@ -20,10 +27,9 @@ fun HistoryDrawerContent(historyList: List<Letter>, onClose: () -> Unit) {
         .fillMaxSize()
         .padding(16.dp)
     ) {
-        // Uppdatering för Typography i Material3
         Text(
             text = "Historik",
-            style = MaterialTheme.typography.titleMedium,  // Använd titleMedium
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
@@ -45,11 +51,10 @@ fun HistoryDrawerContent(historyList: List<Letter>, onClose: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Ändrat för Material3 buttonColors
         Button(
             onClick = onClose,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFF1AABE),  // Använd containerColor istället för backgroundColor
+                containerColor = Color(0xFFF1AABE),
                 contentColor = Color.White
             ),
             shape = CircleShape,

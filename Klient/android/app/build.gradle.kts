@@ -86,4 +86,7 @@ dependencies {
     // hanterar serialisering och deserialisering av JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
+    //2025-05-06 mimoza behrami har lagt till detta beroende:
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+
 }

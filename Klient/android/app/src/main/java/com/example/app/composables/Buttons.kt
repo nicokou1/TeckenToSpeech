@@ -1,5 +1,6 @@
 package com.example.app.composables
 
+import android.speech.tts.TextToSpeech
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -17,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.example.app.connection.Letter
 
 /**
  * This class contains all buttons to be shown and used on UI.
@@ -29,6 +31,7 @@ import androidx.compose.runtime.setValue
 // 2025-04-24 Mimoza Behrami - Lagt till JavaDoc.
 // 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för BottomCenterRoundedButton och SpeakerIconButton.
 // 2025-04-25 Mimoza Behrami & Farzaneh Ibrahimi - Ändrat färger på knappar för att passa till bakgrundsbilden.
+// 2025-05-06 Mimoza Behrami - Ändrat onClick i SpeakerIconButton för att koppla till den hämtade datan
 
 
 /**
@@ -63,10 +66,6 @@ fun BottomCenterRoundedButton(
     }
 }
 
-
-
-
-
 /**
  * Clickable button with the symbol of a speaker.
  * Starts the TTS-translation of letters.
@@ -74,17 +73,17 @@ fun BottomCenterRoundedButton(
  * @since ?
  */
 @Composable
-fun SpeakerIconButton() {
-    var isVolumeOn by remember { mutableStateOf(true) }
-
+fun SpeakerIconButton(
+    isVolumeOn: Boolean,
+    onClick: () -> Unit
+) {
     IconButton(
-        onClick = { isVolumeOn = !isVolumeOn }, //växla tillstånd för varje klick
+        onClick = onClick,
         modifier = Modifier
             .padding(start = 16.dp)
             .size(80.dp)
             .background(Color(0xFFF1AABE), shape = CircleShape)
     ) {
-        @Suppress("DEPRECATION")
         val icon = if (isVolumeOn) Icons.Filled.VolumeUp else Icons.Filled.VolumeOff
         Icon(
             imageVector = icon,

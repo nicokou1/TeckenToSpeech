@@ -37,4 +37,6 @@ suspend fun fetchLetter(): List<Letter> {
         }
     }
     return client.get("http://51.21.255.36:8000/app").body()
+
+    // ------------------ GLÖM EJ TRY CATCH / ANNAN LOGIK FÖR FEL VID ANSLUTNING ------------------
 }
