@@ -42,14 +42,14 @@ import com.example.app.tts.TTSManager
 // 2025-04-28 Farzaneh Ibrahimi - Lagt till bakgrundsbild
 // 2025-04-30 Mimoza Behrami - Lagt till en sidopanel att spara historiken i
 // 2025-05-06 Mimoza Behrami - Flyttat allt som inte är grafik ("view") till MainViewModel.
-// 2025-05-06 Mimoza Behrami - Instansierar TTS samt lagt till funktioner som TTS använder
+// 2025-05-06 Mimoza Behrami - Instansierar TTSManager samt lagt till funktioner som ttsManager använder.
 
 class MainActivity : ComponentActivity() {
 
     private lateinit var ttsManager: TTSManager
     var output: LetterOutput = LetterOutput()
 
-    //onCreate är alltid det första som körs då appen öppnas
+    // onCreate är alltid det första som körs då appen öppnas
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
             val isTranslating = viewModel.isTranslating
             val historyList = viewModel.historyList
 
-            //skapar instans av sidopanelen för historik
+            // skapar instans av sidopanelen för historik
             ModalDrawer(
                 drawerState = drawerState,
                 drawerContent = {
@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
                     })
                 }
             ) {
-                //innehållets layout
+                // innehållets layout
                 MaterialTheme {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         Box(
