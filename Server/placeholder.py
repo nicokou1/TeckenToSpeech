@@ -1,4 +1,6 @@
 import base64
+import os
+import time
 
 from fastapi import FastAPI, HTTPException, APIRouter, Request
 from fastapi.responses import RedirectResponse
@@ -11,6 +13,9 @@ from datetime import datetime
 
 app = FastAPI()
 # Hela klassen är @author Nicolas K, Rawan, Hiyam. 2025-04-28
+UPLOAD_FOLDER = "saved_images"
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=False)
 
 http_log = deque(maxlen=20)
 data_storage = deque(maxlen=10)
@@ -81,13 +86,22 @@ def send_data():
 # Test metod där Inbyggda systemet skickar en bild till server
 # I sin tur decodear Servern bilden och visar den.
 @app.post("/image")
-def image_gesture(data: ImageInput):
-    if data is None:
+async def image_gesture(data: ImageInput):
+    if not data.picture:
         raise HTTPException(status_code=404, detail=f"Item not found")
-    #else:
-        #image_data = base64.b64decode(data.picture)
-        #image = Image.open(BytesIO(image_data))
-        #image.show()
+    try:
+        image_data = base64.b64decode(data.picture)
+        image = Image.open(BytesIO(image_data))
+        timestamp = time.strftime("%Y%m%d-%H%M%S")
+        filename = f"{timestamp}.jpg"
+        image_path = os.path.join(UPLOAD_FOLDER, filename)
+        image.save(image_path)
+        print(f"Image saved at {image_path}")
+        return {"message": "Image successfully saved", "filename": filename}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
+
 
 # Metod där Inbyggda systemet skickar data till Server
 # Om datan är null == Felmeddelande
