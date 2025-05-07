@@ -1,5 +1,6 @@
 package com.example.app.connection
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -15,5 +16,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Letter(
+    @SerialName("letter")
     val body: String
 )
