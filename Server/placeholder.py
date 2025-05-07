@@ -13,12 +13,12 @@ from datetime import datetime
 
 app = FastAPI()
 # Hela klassen är @author Nicolas K, Rawan, Hiyam. 2025-04-28
-UPLOAD_FOLDER = "saved_images"
+#UPLOAD_FOLDER = "saved_images"
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=False)
+#os.makedirs(UPLOAD_FOLDER, exist_ok=False)
 
 http_log = deque(maxlen=20)
-data_storage = deque(maxlen=10)
+data_storage = deque(maxlen=2)
 class Gesture(BaseModel):
     gesture: str
     confidence: float
@@ -74,30 +74,27 @@ def redirect_to_docs():
 # vi får från det Inbyggda systemet.
 @app.get("/app")
 def send_data():
-    data = [
-    {
-        "id":12,
-        "title":"Mimoza",
-        "body":"ärcool123"
+    data = {
+        "letter": "A"
     }
-    ]
     return JSONResponse(content=data)
 
 # Test metod där Inbyggda systemet skickar en bild till server
 # I sin tur decodear Servern bilden och visar den.
 @app.post("/image")
 async def image_gesture(data: ImageInput):
-    if not data.picture:
+    #if not data.picture:
+    if data is None:
         raise HTTPException(status_code=404, detail=f"Item not found")
     try:
-        image_data = base64.b64decode(data.picture)
-        image = Image.open(BytesIO(image_data))
-        timestamp = time.strftime("%Y%m%d-%H%M%S")
-        filename = f"{timestamp}.jpg"
-        image_path = os.path.join(UPLOAD_FOLDER, filename)
-        image.save(image_path)
-        print(f"Image saved at {image_path}")
-        return {"message": "Image successfully saved", "filename": filename}
+       #image_data = base64.b64decode(data.picture)
+        #image = Image.open(BytesIO(image_data))
+        #timestamp = time.strftime("%Y%m%d-%H%M%S")
+        #filename = f"{timestamp}.jpg"
+        #image_path = os.path.join(UPLOAD_FOLDER, filename)
+        #image.save(image_path)
+        #print(f"Image saved at {image_path}")
+        return {"message": "Image successfully saved"}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
