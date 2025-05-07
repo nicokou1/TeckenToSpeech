@@ -41,6 +41,7 @@ import com.example.app.tts.TTSManager
 // 2025-04-24 Mimoza Behrami - Lagt till knapparna från Buttons i onCreate()
 // 2025-04-28 Farzaneh Ibrahimi - Lagt till bakgrundsbild
 // 2025-04-30 Mimoza Behrami - Lagt till en sidopanel att spara historiken i
+// 2025-05-06 Mimoza Behrami - Flyttat allt som inte är grafik ("view") till MainViewModel.
 // 2025-05-06 Mimoza Behrami - Instansierar TTS samt lagt till funktioner som TTS använder
 
 class MainActivity : ComponentActivity() {

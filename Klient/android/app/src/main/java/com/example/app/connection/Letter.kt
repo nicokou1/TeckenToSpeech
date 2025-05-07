@@ -9,8 +9,9 @@ import kotlinx.serialization.Serializable
  */
 
 // Changelog:
-// 2025-04-16 Mimoza Behrami - Ändrat från testkod till kod som passar för bokstäver
-// 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
+// 2025-04-16 Mimoza Behrami - Ändrat från testkod till kod som passar för bokstäver.
+// 2025-04-17 Mimoza Behrami - Lagt till JavaDoc.
+// 2025-05-07 Mimoza Behrami - Raderat all testkod, nu finns endast den äkta koden kvar.
 
 @Serializable
 data class Letter(
