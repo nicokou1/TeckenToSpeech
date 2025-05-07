@@ -31,7 +31,7 @@ import com.example.app.connection.Letter
 // 2025-04-24 Mimoza Behrami - Lagt till JavaDoc.
 // 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för BottomCenterRoundedButton och SpeakerIconButton.
 // 2025-04-25 Mimoza Behrami & Farzaneh Ibrahimi - Ändrat färger på knappar för att passa till bakgrundsbilden.
-// 2025-05-06 Mimoza Behrami - Ändrat onClick i SpeakerIconButton för att koppla till den hämtade datan
+// 2025-05-06 Mimoza Behrami - Ändrat onClick i SpeakerIconButton och ClearIconButton
 
 
 /**
@@ -68,7 +68,7 @@ fun BottomCenterRoundedButton(
 
 /**
  * Clickable button with the symbol of a speaker.
- * Starts the TTS-translation of letters.
+ * Toggles state between sound on or sound off.
  * @author Farzaneh Ibrahimi
  * @since ?
  */
@@ -96,7 +96,7 @@ fun SpeakerIconButton(
 
 /**
  * Clickable button with the symbol of a trash can.
- * Deletes the received letters.
+ * For deleting letters on screen.
  * @author Farzaneh Ibrahimi
  * @since ?
  */

@@ -27,11 +27,11 @@ import androidx.compose.runtime.setValue
 import com.example.app.connection.Letter
 import com.example.app.tts.TTSManager
 
-
 /**
  * MainActivity is the primary entry point of the application.
  * It is responsible for initializing the UI and setting up necessary components during app startup.
- * Also serves as a gateway to the business logic.
+ * Serves as a gateway to the business logic.
+ * Contains lifecycle functions for TTS.
  * @author Mimoza Behrami & Farzaneh Ibrahimi
  * @since 2025-04-14
  */
@@ -40,8 +40,8 @@ import com.example.app.tts.TTSManager
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 // 2025-04-24 Mimoza Behrami - Lagt till knapparna från Buttons i onCreate()
 // 2025-04-28 Farzaneh Ibrahimi - Lagt till bakgrundsbild
-// 2025-04-30 Mimoza Behrami - Lagt till en drawer (sidopanel) att spara historiken i
-// 2025-05-06 Mimoza Behrami - Lägger till logik för onDestroy() och toggleSpeaker()
+// 2025-04-30 Mimoza Behrami - Lagt till en sidopanel att spara historiken i
+// 2025-05-06 Mimoza Behrami - Instansierar TTS samt lagt till funktioner som TTS använder
 
 class MainActivity : ComponentActivity() {
 
@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
             var isVolumeOn by remember { mutableStateOf(false) }
-            val fetchedLetter = viewModel.fetchedLetters
+            val fetchedLetter = viewModel.fetchedLetter
             val isTranslating = viewModel.isTranslating
             val historyList = viewModel.historyList
 
@@ -126,7 +126,8 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * <kommentar>
+     * Called when the activity is being destroyed by the system.
+     * Shuts down the TTS engine to release resources.
      * @author Mimoza Behrami
      * @since 2025-05-06
      */
@@ -136,16 +137,17 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * <kommentar>
-     * @param <kommentar>
+     * Called when speaker button is pressed.
+     * Toggles state to start or stop the TTS function.
+     * @param isSpeakerOn indicates if speaker is currently on or off.
+     * @param letter the letter to be spoken
+     * @return true if speaker is on, false if speaker is off.
      * @author Mimoza Behrami
      * @since 2025-05-06
      */
-    private fun toggleSpeaker(isSpeakerOn: Boolean, letters: List<Letter>): Boolean {
-        return if (!isSpeakerOn) {
-            for (letter in letters) {
-                ttsManager.speak(letter.body)
-            }
+    private fun toggleSpeaker(isSpeakerOn: Boolean, letter: Letter?): Boolean {
+        return if (!isSpeakerOn && letter != null) {
+            ttsManager.speak(letter.body)
             true
         } else {
             ttsManager.stop()

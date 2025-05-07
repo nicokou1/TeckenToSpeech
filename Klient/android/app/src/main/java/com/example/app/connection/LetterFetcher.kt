@@ -26,7 +26,7 @@ import kotlinx.serialization.json.Json
  * @author Mimoza Behrami
  * @since 2024-04-14
  */
-suspend fun fetchLetter(): List<Letter> {
+suspend fun fetchLetter(): Letter {
 
     //skapar HTTP-klient med CIO-motor som hanterar nätverkstrafiken (se build.gradle)
     val client = HttpClient(CIO) {

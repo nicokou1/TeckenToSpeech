@@ -15,8 +15,9 @@ import androidx.compose.ui.unit.sp
 
 /**
  * Composable for the history drawer.
- * Contains all the content of the history drawer.
- * @param <kommentar>
+ * Displays a list of previously received letters and a close button for the drawer.
+ * @param historyList list of letters to be put in history.
+ * @param onClose lambda function triggered when the close button is pressed.
  * @author Mimoza Behrami
  * @since 2025-04-30
  */
@@ -41,8 +42,6 @@ fun HistoryDrawerContent(historyList: List<Letter>, onClose: () -> Unit) {
                         .padding(vertical = 4.dp)
                 ) {
                     Column(modifier = Modifier.padding(8.dp)) {
-                        Text("ID: ${letter.id}")
-                        Text("Titel: ${letter.title}")
                         Text("Innehåll: ${letter.body}")
                     }
                 }

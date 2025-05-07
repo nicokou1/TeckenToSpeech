@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import com.example.app.connection.*
 
 /**
- * Contains some of the business logic for the UI.
+ * ViewModel containing business logic for the UI.
+ * Translation toggling, data fetching, and history management.
+ * Separates logic from MainActivity to improve readability and maintainability.
  * @author Mimoza Behrami
  * @since 2025-05-06
  */
@@ -22,7 +24,7 @@ import com.example.app.connection.*
 class MainViewModel : ViewModel() {
 
     // tillståndsvariabler
-    var fetchedLetters by mutableStateOf(emptyList<Letter>())
+    var fetchedLetter by mutableStateOf<Letter?>(null)
         private set
 
     var isTranslating by mutableStateOf(false)
@@ -54,8 +56,8 @@ class MainViewModel : ViewModel() {
             fetchJob?.cancel()
         } else {
             fetchJob = viewModelScope.launch {
-                val newLetters = fetchLetter()
-                fetchedLetters = newLetters
+                val newLetter = fetchLetter()
+                fetchedLetter = newLetter
             }
         }
         isTranslating = !isTranslating
@@ -63,14 +65,14 @@ class MainViewModel : ViewModel() {
 
 
     /**
-     * Logic for when clicking clear-button.
-     * Data transfers to history.
-     * Clears the data from screen text box.
+     * Called when clicking the clear button.
+     * Data transfers to history panel.
+     * Clears the data from text field on screen.
      * @author Mimoza Behrami
      * @since 2025-05-06
      */
     fun clearFetchedLetters() {
-        historyList.addAll(fetchedLetters)
-        fetchedLetters = emptyList()
+        fetchedLetter?.let { historyList.add(it) }
+        fetchedLetter = null
     }
 }

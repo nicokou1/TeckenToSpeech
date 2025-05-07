@@ -5,7 +5,8 @@ import android.speech.tts.TextToSpeech
 import java.util.Locale
 
 /**
- * <kommentar>
+ * Manager class for handling Text-To-Speech (TTS) functionality.
+ * Encapsulates initialization, speaking, stopping, and shutdown logic.
  * @author Mimoza Behrami
  * @since 2025-05-06
  */
@@ -18,7 +19,8 @@ class TTSManager(private val context: Context) : TextToSpeech.OnInitListener {
     private var isInitialized = false
 
     /**
-     * <kommentar>
+     * Initialize the TTS engine with a given context.
+     * Must be called before using speak(), stop(), or shutdown().
      * @author Mimoza Behrami
      * @since 2025-05-06
      */
@@ -27,8 +29,9 @@ class TTSManager(private val context: Context) : TextToSpeech.OnInitListener {
     }
 
     /**
-     * <kommentar>
-     * @param <kommentar>
+     * Callback when the TTS finish initializing.
+     * Sets language to Swedish and updates initialization state.
+     * @param status Initialization status passed from TTS. Status SUCCESS if initialization succeeded.
      * @author Mimoza Behrami
      * @since 2025-05-06
      */
@@ -40,8 +43,9 @@ class TTSManager(private val context: Context) : TextToSpeech.OnInitListener {
     }
 
     /**
-     * <kommentar>
-     * @param <kommentar>
+     * Speaks the given text character by character with a delay between each character.
+     * @param text the text to be spoken.
+     * @param pauseMillis how long the delay should be between characters, in milliseconds.
      * @author Mimoza Behrami
      * @since 2025-05-06
      */
@@ -57,7 +61,7 @@ class TTSManager(private val context: Context) : TextToSpeech.OnInitListener {
     }
 
     /**
-     * <kommentar>
+     * Stops the ongoing speech.
      * @author Mimoza Behrami
      * @since 2025-05-06
      */
@@ -68,7 +72,7 @@ class TTSManager(private val context: Context) : TextToSpeech.OnInitListener {
     }
 
     /**
-     * <kommentar>
+     * Shuts down the TTS engine and releases its resources.
      * @author Mimoza Behrami
      * @since 2025-05-06
      */

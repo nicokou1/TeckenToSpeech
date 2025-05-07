@@ -14,7 +14,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Letter(
-    val id: Int,
-    val title: String,
     val body: String
 )
