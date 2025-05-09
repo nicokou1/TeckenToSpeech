@@ -26,6 +26,7 @@ import com.example.app.connection.Letter
 // 2025-04-16 Mimoza Behrami - Ändrat från testkod till kod som passar för bokstäver
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 // 2025-04-28 Mimoza Behrami - Lagt till en textruta som hämtad data skrivs ut i
+// 2025-05-09 Mimoza Behrami - Lagt till skrollningsfunktion, ifall textrutan blir överfylld så blir den skrollbar
 
 class LetterOutput {
 
@@ -47,7 +48,7 @@ class LetterOutput {
                 fetchedLetter?.let { letter ->
                     Column(modifier = Modifier
                         .padding(8.dp)
-                        .verticalScroll(rememberScrollState()) // textrutan blir skrollbar ifall det kommer mer text än vad som får plats
+                        .verticalScroll(rememberScrollState())
                     ) {
                         Text(text = letter.body,
                             fontSize = 30.sp)

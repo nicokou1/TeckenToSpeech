@@ -34,8 +34,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.ui.graphics.Color
 
-
-
 /**
  * MainActivity is the primary entry point of the application.
  * It is responsible for initializing the UI and setting up necessary components during app startup.
