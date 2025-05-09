@@ -42,7 +42,7 @@ fun HistoryDrawerContent(historyList: List<Letter>, onClose: () -> Unit) {
                         .padding(vertical = 4.dp)
                 ) {
                     Column(modifier = Modifier.padding(8.dp)) {
-                        Text("Innehåll: ${letter.body}")
+                        Text(letter.body)
                     }
                 }
             }

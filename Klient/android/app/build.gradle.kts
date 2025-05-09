@@ -3,9 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
-    // 2025-04-14
-    // mimoza har lagt till plugin:
-    kotlin("plugin.serialization") version "1.9.22" //kompilatorstöd för @Serializable
+    kotlin("plugin.serialization") version "1.9.22" // kompilatorstöd för @Serializable
 }
 
 android {
@@ -31,28 +29,39 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
     }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+
+    // material 1 och material3 för compose
     implementation(libs.androidx.material3)
+    implementation("androidx.compose.material:material:1.6.1") // historik-panelen behöver ha denna!
+
+    // ikoner
+    implementation("androidx.compose.material:material-icons-extended:1.6.1")
+
+    // Test och debug
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,32 +70,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //FARZANEH IBRAHIMI 2025-04-16
-    implementation("androidx.compose.material:material-icons-extended:1.6.1")
-
-    // 2025-04-30 Mimoza har lagt till:
-    implementation("androidx.compose.material:material:1.6.1")
-
-    // 2025-04-14
-    // mimoza har lagt till följande beroenden:
+    // Ktor och JSON
     val ktorVersion = "2.3.4"
-
-    // Ktor Client - kärnklasser för hantering av HTTP-anrop
     implementation("io.ktor:ktor-client-core:$ktorVersion")
-
-    // "CIO" = Co-routine based I/O - nätverksmotor som skickar/tar emot nätverkstrafik
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
-
-    // för att låta klienten driva innehållsförhandling
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-
-    // möjliggör automatisk tolkning av och konvertering från JSON-objekt till kotlin-objekt
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-
-    // hanterar serialisering och deserialisering av JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
-    //2025-05-06 mimoza behrami har lagt till detta beroende:
+    // viewmodel med compose-stöd
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-
 }

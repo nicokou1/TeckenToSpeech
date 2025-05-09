@@ -16,6 +16,8 @@ import com.example.app.composables.*
 import com.example.app.composables.LetterOutput
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.DrawerValue
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
@@ -26,6 +28,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.app.connection.Letter
 import com.example.app.tts.TTSManager
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.ui.graphics.Color
+
+
 
 /**
  * MainActivity is the primary entry point of the application.
@@ -43,6 +52,7 @@ import com.example.app.tts.TTSManager
 // 2025-04-30 Mimoza Behrami - Lagt till en sidopanel att spara historiken i
 // 2025-05-06 Mimoza Behrami - Flyttat allt som inte är grafik ("view") till MainViewModel.
 // 2025-05-06 Mimoza Behrami - Instansierar TTSManager samt lagt till funktioner som ttsManager använder.
+// 2025-05-09 Mimoza Behrami - Lagt till "hamburgerknapp" och "snackbar" för historikpanelen.
 
 class MainActivity : ComponentActivity() {
 
@@ -66,6 +76,7 @@ class MainActivity : ComponentActivity() {
             val fetchedLetter = viewModel.fetchedLetter
             val isTranslating = viewModel.isTranslating
             val historyList = viewModel.historyList
+            val snackbarHostState = remember { SnackbarHostState() }
 
             // skapar instans av sidopanelen för historik
             ModalDrawer(
@@ -78,12 +89,16 @@ class MainActivity : ComponentActivity() {
             ) {
                 // innehållets layout
                 MaterialTheme {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        snackbarHost = { SnackbarHost(snackbarHostState) }
+                    ) { innerPadding ->
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(innerPadding)
                         ) {
+
                             // ställer in bakgrundsbild
                             Image(
                                 painter = painterResource(id = R.drawable.img),
@@ -92,19 +107,41 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.fillMaxSize()
                             )
 
-                            // visar logik från ConnectionComposable
+                            // knapp för historik-panelen
+                            IconButton(
+                                onClick = { scope.launch { drawerState.open() } },
+                                modifier = Modifier
+                                    .align(Alignment.TopStart)
+                                    .padding(16.dp)
+                                    .size(48.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "Öppna historik",
+                                    tint = Color.Gray
+                                )
+                            }
+
+                            // visar hämtade bokstäver i textrutan
                             output.ShowLetterOnScreen(fetchedLetter)
 
-                            // ställer in (Row) och visar knappar from Buttons
+                            // ställer in och visar knappar from Buttons
                             Row(
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
                                     .padding(bottom = 16.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
+
                                 ClearIconButton(onClear = {
-                                    viewModel.clearFetchedLetters()
-                                    scope.launch { drawerState.open() }
+                                    if (fetchedLetter != null) {
+                                        viewModel.clearFetchedLetters()
+                                        scope.launch { drawerState.open() }
+                                    } else {
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar("Det finns inget att radera.")
+                                        }
+                                    }
                                 })
 
                                 BottomCenterRoundedButton(

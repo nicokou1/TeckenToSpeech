@@ -1,6 +1,8 @@
 package com.example.app.composables
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -9,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.app.connection.Letter
 
 
@@ -35,15 +38,19 @@ class LetterOutput {
             Surface(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .padding(top = 93.dp)
+                    .padding(top = 120.dp)
                     .width(334.dp)
                     .height(192.dp),
                 color = Color.Transparent,
                 shape = MaterialTheme.shapes.medium
             ) {
                 fetchedLetter?.let { letter ->
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        Text(text = "Innehåll: ${letter.body}")
+                    Column(modifier = Modifier
+                        .padding(8.dp)
+                        .verticalScroll(rememberScrollState()) // textrutan blir skrollbar ifall det kommer mer text än vad som får plats
+                    ) {
+                        Text(text = letter.body,
+                            fontSize = 30.sp)
                     }
                 }
             }
