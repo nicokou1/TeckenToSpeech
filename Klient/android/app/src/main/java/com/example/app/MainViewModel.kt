@@ -20,6 +20,7 @@ import com.example.app.connection.*
 
 // Changelog:
 // 2025-05-06 Mimoza Behrami - flyttat innehåll från MainActivity hit, för läsbarhet och ansvarsseparation
+// 2025-05-09 Mimoza Behrami - uppdaterat toggleTranslation() för att kontinuerligt hämta nya bokstäver
 
 class MainViewModel : ViewModel() {
 
@@ -32,8 +33,6 @@ class MainViewModel : ViewModel() {
 
     var historyList = mutableStateListOf<Letter>()
         private set
-
-
 
     /*
     Job: När vi gör nätverksanropet (med fetchLetter())
@@ -56,13 +55,18 @@ class MainViewModel : ViewModel() {
             fetchJob?.cancel()
         } else {
             fetchJob = viewModelScope.launch {
-                val newLetter = fetchLetter()
-                fetchedLetter = newLetter
+                while (true) {
+                    val newLetter = fetchLetter()
+                    if (newLetter.body.isNotBlank()) {
+                        val combined = (fetchedLetter?.body ?: "") + newLetter.body
+                        fetchedLetter = Letter(combined)
+                    }
+                    kotlinx.coroutines.delay(1000)
+                }
             }
         }
         isTranslating = !isTranslating
     }
-
 
     /**
      * Called when clicking the clear button.
