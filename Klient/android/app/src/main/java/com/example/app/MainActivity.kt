@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.LaunchedEffect
 
 /**
  * MainActivity is the primary entry point of the application.
@@ -75,6 +76,15 @@ class MainActivity : ComponentActivity() {
             val isTranslating = viewModel.isTranslating
             val historyList = viewModel.historyList
             val snackbarHostState = remember { SnackbarHostState() }
+            var lastSpokenLength by remember { mutableStateOf(0) }
+
+            LaunchedEffect(fetchedLetter, isVolumeOn) {
+                if (isVolumeOn && fetchedLetter != null && fetchedLetter.body.length > lastSpokenLength) {
+                    val newText = fetchedLetter.body.substring(lastSpokenLength)
+                    ttsManager.speak(newText)
+                    lastSpokenLength = fetchedLetter.body.length
+                }
+            }
 
             // skapar instans av sidopanelen för historik
             ModalDrawer(
@@ -134,6 +144,7 @@ class MainActivity : ComponentActivity() {
                                 ClearIconButton(onClear = {
                                     if (fetchedLetter != null) {
                                         viewModel.clearFetchedLetters()
+                                        lastSpokenLength = 0
                                         scope.launch { drawerState.open() }
                                     } else {
                                         scope.launch {
