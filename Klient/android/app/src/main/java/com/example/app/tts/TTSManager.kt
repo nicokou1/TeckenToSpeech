@@ -2,6 +2,11 @@ package com.example.app.tts
 
 import android.content.Context
 import android.speech.tts.TextToSpeech
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import java.util.Locale
 
 /**
@@ -17,6 +22,8 @@ class TTSManager(private val context: Context) : TextToSpeech.OnInitListener {
 
     private lateinit var tts: TextToSpeech
     private var isInitialized = false
+    private var speakJob: Job? = null
+    private val scope = CoroutineScope(Dispatchers.Default)
 
     /**
      * Initialize the TTS engine with a given context.
@@ -51,13 +58,13 @@ class TTSManager(private val context: Context) : TextToSpeech.OnInitListener {
      */
     fun speak(text: String, pauseMillis: Long = 500) {
         if (!isInitialized) return
-
-        Thread {
+        speakJob?.cancel()
+        speakJob = scope.launch {
             for (char in text) {
-                tts.speak(char.toString(), TextToSpeech.QUEUE_FLUSH, null, null)
-                Thread.sleep(pauseMillis)
+                tts.speak(char.toString(), TextToSpeech.QUEUE_ADD, null, char.toString())
+                delay(pauseMillis)
             }
-        }.start()
+        }
     }
 
     /**

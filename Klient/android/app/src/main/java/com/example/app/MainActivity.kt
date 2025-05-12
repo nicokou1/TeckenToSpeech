@@ -52,6 +52,7 @@ import androidx.compose.runtime.LaunchedEffect
 // 2025-05-06 Mimoza Behrami - Flyttat allt som inte är grafik ("view") till MainViewModel.
 // 2025-05-06 Mimoza Behrami - Instansierar TTSManager samt lagt till funktioner som ttsManager använder.
 // 2025-05-09 Mimoza Behrami - Lagt till "hamburgerknapp" och "snackbar" för historikpanelen.
+// 2025-05-12 Mimoza Behrami - Lagt till LaunchedEffect i setContent
 
 class MainActivity : ComponentActivity() {
 
@@ -78,6 +79,7 @@ class MainActivity : ComponentActivity() {
             val snackbarHostState = remember { SnackbarHostState() }
             var lastSpokenLength by remember { mutableStateOf(0) }
 
+            // följer med i bokstavsflödet, undviker upprepning av föregående bokstäver
             LaunchedEffect(fetchedLetter, isVolumeOn) {
                 if (isVolumeOn && fetchedLetter != null && fetchedLetter.body.length > lastSpokenLength) {
                     val newText = fetchedLetter.body.substring(lastSpokenLength)
