@@ -27,7 +27,7 @@ import kotlinx.serialization.json.Json
  * @author Mimoza Behrami
  * @since 2024-04-14
  */
-/*suspend fun fetchLetter(): Letter {
+suspend fun fetchLetter(): Letter {
 
     //skapar HTTP-klient med CIO-motor som hanterar nätverkstrafiken (se build.gradle)
     val client = HttpClient(CIO) {
@@ -38,9 +38,10 @@ import kotlinx.serialization.json.Json
         }
     }
     return client.get("http://51.21.255.36:8000/app").body()
-}*/
+}
 
-suspend fun fetchLetter(): Letter {
+// testmetod för felhantering vid anslutningsproblem
+/*suspend fun fetchLetter(): Letter {
     delay(30000)
     return Letter("X")
-}
+}*/

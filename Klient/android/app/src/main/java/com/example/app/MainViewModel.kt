@@ -10,10 +10,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.isActive
-import kotlin.math.pow
 
 /**
  * ViewModel (controller) containing business logic for the UI.
@@ -26,7 +24,7 @@ import kotlin.math.pow
 // Changelog:
 // 2025-05-06 Mimoza Behrami - flyttat innehåll från MainActivity hit, för läsbarhet och ansvarsseparation.
 // 2025-05-09 Mimoza Behrami - uppdaterat toggleTranslation() för att kontinuerligt hämta nya bokstäver.
-// 2025-05-13 Mimoza Behrami - lagt till felhantering och återanslutning vid anslutningsproblem i toggleTranslation().
+// 2025-05-13 Mimoza Behrami - lagt till felhantering och återanslutningslogik för anslutningsproblem i toggleTranslation().
 
 class MainViewModel : ViewModel() {
 
