@@ -24,7 +24,7 @@ import androidx.compose.material.icons.filled.VolumeOff
 // Changelog:
 // 2025-04-24 Mimoza Behrami - Tagit bort redundant mainActivity-metod. Anropar knapparna från MainAcitivity-klassen istället.
 // 2025-04-24 Mimoza Behrami - Lagt till JavaDoc.
-// 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för BottomCenterRoundedButton och SpeakerIconButton.
+// 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för BottomCenterButton och SpeakerIconButton.
 // 2025-04-25 Mimoza Behrami & Farzaneh Ibrahimi - Ändrat färger på knappar för att passa till bakgrundsbilden.
 // 2025-05-06 Mimoza Behrami - Ändrat onClick i SpeakerIconButton och ClearIconButton
 
@@ -39,7 +39,7 @@ import androidx.compose.material.icons.filled.VolumeOff
  * @author Farzaneh Ibrahimi
  */
 @Composable
-fun BottomCenterRoundedButton(
+fun BottomCenterButton(
     isTranslating: Boolean, // Tillståndet som styr knappens text ("Paus" eller "Översätt")
     onClick: () -> Unit,    // Funktion som anropas vid knapptryck
     modifier: Modifier = Modifier // Modifier som kan användas för att anpassa knappens storlek och position

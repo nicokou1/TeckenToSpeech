@@ -53,7 +53,7 @@ import androidx.compose.runtime.LaunchedEffect
 // 2025-05-06 Mimoza Behrami - Instansierar TTSManager samt lagt till funktioner som ttsManager använder.
 // 2025-05-09 Mimoza Behrami - Lagt till "hamburgerknapp" och "snackbar" för historikpanelen.
 // 2025-05-12 Mimoza Behrami - Lagt till LaunchedEffect i setContent som ttsManager använder.
-// 2025-05-13 Mimoza Behrami - Ändrat onClick i BottomCenterRoundedButton för att hantera felmeddelanden.
+// 2025-05-13 Mimoza Behrami - Ändrat onClick i BottomCenterButton för att hantera felmeddelanden.
 
 class MainActivity : ComponentActivity() {
 
@@ -156,7 +156,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 })
 
-                                BottomCenterRoundedButton(
+                                BottomCenterButton(
                                     isTranslating = isTranslating,
                                     onClick = {
                                         viewModel.toggleTranslation { message ->
