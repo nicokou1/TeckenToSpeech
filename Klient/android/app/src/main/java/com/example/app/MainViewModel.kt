@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.isActive
@@ -62,37 +63,36 @@ class MainViewModel : ViewModel() {
             }
         } else {
             fetchJob = viewModelScope.launch {
-                var attempt = 0
-                val maxAttempts = 3
-                val startTime = System.currentTimeMillis()
-                var success = false
+                while (isActive) {
+                    var success = false
+                    var attempt = 0
+                    val maxAttempts = 3
 
-                while (attempt < maxAttempts) {
-                    attempt++
-                    val timeoutPerAttempt = attempt * 2000L // exponentiell backoff
-                    val totalElapsed = System.currentTimeMillis() - startTime
+                    while (attempt < maxAttempts && !success && isActive) {
+                        val timeoutMs = (attempt + 1) * 2000L // exponentiell backoff
 
-                    try {
-                        withTimeout(timeoutPerAttempt) {
-                            val letter = fetchLetter()
-                            if (letter.body.isNotBlank()) {
-                                val combined = (fetchedLetter?.body ?: "") + letter.body
-                                fetchedLetter = Letter(combined)
+                        try {
+                            withTimeout(timeoutMs) {
+                                val letter = fetchLetter()
+                                if (letter.body.isNotBlank()) {
+                                    val combined = (fetchedLetter?.body ?: "") + letter.body
+                                    fetchedLetter = Letter(combined)
+                                }
+                                success = true
                             }
-                            success = true
+                        } catch (e: Exception) {
+                            attempt++
+                            snackbarCallback("Misslyckad anslutning (försök $attempt). Försöker igen...")
+                            delay(500)
                         }
-                    } catch (e: Exception) {
-                        snackbarCallback("Misslyckad anslutning (försök $attempt). Försöker igen...")
                     }
 
-                    if (!isActive) return@launch
-                    if (success) break
-
-                    if (attempt >= maxAttempts || totalElapsed >= 12_000L) {
-                        snackbarCallback("Det gick inte att ansluta till servern just nu. Försök igen senare.")
+                    if (!success) {
+                        snackbarCallback("Det gick inte att ansluta. Försök igen senare.")
                         isTranslating = false
                         return@launch
                     }
+                    delay(1000)
                 }
             }
         }
