@@ -6,6 +6,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 
 /**
@@ -26,7 +27,7 @@ import kotlinx.serialization.json.Json
  * @author Mimoza Behrami
  * @since 2024-04-14
  */
-suspend fun fetchLetter(): Letter {
+/*suspend fun fetchLetter(): Letter {
 
     //skapar HTTP-klient med CIO-motor som hanterar nätverkstrafiken (se build.gradle)
     val client = HttpClient(CIO) {
@@ -37,6 +38,9 @@ suspend fun fetchLetter(): Letter {
         }
     }
     return client.get("http://51.21.255.36:8000/app").body()
+}*/
 
-    // ------------------ GLÖM EJ TRY CATCH / ANNAN LOGIK FÖR FEL VID ANSLUTNING ------------------
+suspend fun fetchLetter(): Letter {
+    delay(30000)
+    return Letter("X")
 }

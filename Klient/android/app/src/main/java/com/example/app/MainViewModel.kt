@@ -1,5 +1,7 @@
 package com.example.app
 
+import android.util.Log
+import com.example.app.connection.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -8,10 +10,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import com.example.app.connection.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.isActive
+import kotlin.math.pow
 
 /**
- * ViewModel containing business logic for the UI.
+ * ViewModel (controller) containing business logic for the UI.
  * Translation toggling, data fetching, and history management.
  * Separates logic from MainActivity to improve readability and maintainability.
  * @author Mimoza Behrami
@@ -19,8 +24,9 @@ import com.example.app.connection.*
  */
 
 // Changelog:
-// 2025-05-06 Mimoza Behrami - flyttat innehåll från MainActivity hit, för läsbarhet och ansvarsseparation
-// 2025-05-09 Mimoza Behrami - uppdaterat toggleTranslation() för att kontinuerligt hämta nya bokstäver
+// 2025-05-06 Mimoza Behrami - flyttat innehåll från MainActivity hit, för läsbarhet och ansvarsseparation.
+// 2025-05-09 Mimoza Behrami - uppdaterat toggleTranslation() för att kontinuerligt hämta nya bokstäver.
+// 2025-05-13 Mimoza Behrami - lagt till felhantering och återanslutning vid anslutningsproblem i toggleTranslation().
 
 class MainViewModel : ViewModel() {
 
@@ -50,18 +56,45 @@ class MainViewModel : ViewModel() {
      * @author Farzaneh Ibrahimi
      * @since 2025-05-06
      */
-    fun toggleTranslation() {
+    fun toggleTranslation(snackbarCallback: suspend (String) -> Unit) {
         if (isTranslating) {
             fetchJob?.cancel()
+            viewModelScope.launch {
+                snackbarCallback("Anslutningen avbröts.")
+            }
         } else {
             fetchJob = viewModelScope.launch {
-                while (true) {
-                    val newLetter = fetchLetter()
-                    if (newLetter.body.isNotBlank()) {
-                        val combined = (fetchedLetter?.body ?: "") + newLetter.body
-                        fetchedLetter = Letter(combined)
+                var attempt = 0
+                val maxAttempts = 3
+                val startTime = System.currentTimeMillis()
+                var success = false
+
+                while (attempt < maxAttempts) {
+                    attempt++
+                    val timeoutPerAttempt = attempt * 2000L // exponentiell backoff
+                    val totalElapsed = System.currentTimeMillis() - startTime
+
+                    try {
+                        withTimeout(timeoutPerAttempt) {
+                            val letter = fetchLetter()
+                            if (letter.body.isNotBlank()) {
+                                val combined = (fetchedLetter?.body ?: "") + letter.body
+                                fetchedLetter = Letter(combined)
+                            }
+                            success = true
+                        }
+                    } catch (e: Exception) {
+                        snackbarCallback("Misslyckad anslutning (försök $attempt). Försöker igen...")
                     }
-                    kotlinx.coroutines.delay(1000)
+
+                    if (!isActive) return@launch
+                    if (success) break
+
+                    if (attempt >= maxAttempts || totalElapsed >= 12_000L) {
+                        snackbarCallback("Det gick inte att ansluta till servern just nu. Försök igen senare.")
+                        isTranslating = false
+                        return@launch
+                    }
                 }
             }
         }

@@ -52,7 +52,8 @@ import androidx.compose.runtime.LaunchedEffect
 // 2025-05-06 Mimoza Behrami - Flyttat allt som inte är grafik ("view") till MainViewModel.
 // 2025-05-06 Mimoza Behrami - Instansierar TTSManager samt lagt till funktioner som ttsManager använder.
 // 2025-05-09 Mimoza Behrami - Lagt till "hamburgerknapp" och "snackbar" för historikpanelen.
-// 2025-05-12 Mimoza Behrami - Lagt till LaunchedEffect i setContent
+// 2025-05-12 Mimoza Behrami - Lagt till LaunchedEffect i setContent som ttsManager använder.
+// 2025-05-13 Mimoza Behrami - Ändrat onClick i BottomCenterRoundedButton för att hantera felmeddelanden.
 
 class MainActivity : ComponentActivity() {
 
@@ -157,7 +158,13 @@ class MainActivity : ComponentActivity() {
 
                                 BottomCenterRoundedButton(
                                     isTranslating = isTranslating,
-                                    onClick = { viewModel.toggleTranslation() }
+                                    onClick = {
+                                        viewModel.toggleTranslation { message ->
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(message)
+                                            }
+                                        }
+                                    }
                                 )
 
                                 SpeakerIconButton(
