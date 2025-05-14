@@ -26,11 +26,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.app.tts.TTSManager
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.LaunchedEffect
 
 /**
@@ -115,7 +110,7 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.fillMaxSize()
                             )
 
-                            MenuIconButton {
+                            HistoryButton {
                                 scope.launch { drawerState.open() }
                             }
 

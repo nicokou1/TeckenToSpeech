@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.VolumeOff
 import androidx.compose.ui.Alignment
-import kotlinx.coroutines.launch
 
 
 /**
@@ -31,6 +30,7 @@ import kotlinx.coroutines.launch
 // 2025-04-25 Mimoza Behrami - Lagt till tillståndsväxling för BottomCenterButton och SpeakerIconButton.
 // 2025-04-25 Mimoza Behrami & Farzaneh Ibrahimi - Ändrat färger på knappar för att passa till bakgrundsbilden.
 // 2025-05-06 Mimoza Behrami - Ändrat onClick i SpeakerIconButton och ClearIconButton
+// 2025-05-09 Mimoza Behrami - Lagt till "hamburgerknapp" för historikpanelen.
 
 
 /**
@@ -119,7 +119,7 @@ fun ClearIconButton(onClear : () -> Unit) {
 }
 
 @Composable
-fun BoxScope.MenuIconButton(onClick: () -> Unit) {
+fun BoxScope.HistoryButton(onClick: () -> Unit) {
     IconButton(
         onClick = onClick,
         modifier = Modifier
