@@ -13,7 +13,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.app.composables.*
-import com.example.app.composables.LetterOutput
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.DrawerValue
 import androidx.compose.material3.SnackbarHostState
@@ -26,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.example.app.connection.Letter
 import com.example.app.tts.TTSManager
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -58,7 +56,6 @@ import androidx.compose.runtime.LaunchedEffect
 class MainActivity : ComponentActivity() {
 
     private lateinit var ttsManager: TTSManager
-    var output: LetterOutput = LetterOutput()
 
     // onCreate är alltid det första som körs då appen öppnas
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,25 +115,14 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.fillMaxSize()
                             )
 
-                            // knapp för historik-panelen
-                            IconButton(
-                                onClick = { scope.launch { drawerState.open() } },
-                                modifier = Modifier
-                                    .align(Alignment.TopStart)
-                                    .padding(16.dp)
-                                    .size(48.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Menu,
-                                    contentDescription = "Öppna historik",
-                                    tint = Color.Gray
-                                )
+                            MenuIconButton {
+                                scope.launch { drawerState.open() }
                             }
 
-                            // visar hämtade bokstäver i textrutan
-                            output.ShowLetterOnScreen(fetchedLetter)
+                            // visar den hämtade bokstaven i textrutan
+                            ShowLetterOnScreen(fetchedLetter)
 
-                            // ställer in och visar knappar from Buttons
+                            // ställer in och visar de tre nedersta knapparna
                             Row(
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)
@@ -147,6 +133,7 @@ class MainActivity : ComponentActivity() {
                                 ClearIconButton(onClear = {
                                     if (fetchedLetter != null) {
                                         viewModel.clearFetchedLetters()
+                                        isVolumeOn = false
                                         lastSpokenLength = 0
                                         scope.launch { drawerState.open() }
                                     } else {
@@ -170,7 +157,13 @@ class MainActivity : ComponentActivity() {
                                 SpeakerIconButton(
                                     isVolumeOn = isVolumeOn,
                                     onClick = {
-                                        isVolumeOn = toggleSpeaker(isVolumeOn, fetchedLetter)
+                                        if (!isVolumeOn && fetchedLetter != null) {
+                                            lastSpokenLength = 0
+                                            isVolumeOn = true
+                                        } else {
+                                            isVolumeOn = false
+                                            ttsManager.stop()
+                                        }
                                     }
                                 )
                             }
@@ -190,24 +183,5 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         ttsManager.shutdown()
-    }
-
-    /**
-     * Called when speaker button is pressed.
-     * Toggles state to start or stop the TTS function.
-     * @param isSpeakerOn indicates if speaker is currently on or off.
-     * @param letter the letter to be spoken
-     * @return true if speaker is on, false if speaker is off.
-     * @author Mimoza Behrami
-     * @since 2025-05-06
-     */
-    private fun toggleSpeaker(isSpeakerOn: Boolean, letter: Letter?): Boolean {
-        return if (!isSpeakerOn && letter != null) {
-            ttsManager.speak(letter.body)
-            true
-        } else {
-            ttsManager.stop()
-            false
-        }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.app
 
-import android.util.Log
 import com.example.app.connection.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -8,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.ktor.serialization.JsonConvertException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -74,12 +74,15 @@ class MainViewModel : ViewModel() {
                         try {
                             withTimeout(timeoutMs) {
                                 val letter = fetchLetter()
-                                if (letter.body.isNotBlank()) {
-                                    val combined = (fetchedLetter?.body ?: "") + letter.body
-                                    fetchedLetter = Letter(combined)
-                                }
+                                val combined = (fetchedLetter?.body ?: "") + letter.body
+                                fetchedLetter = Letter(combined)
                                 success = true
                             }
+                        } catch (e: JsonConvertException) {
+                            attempt++
+                            snackbarCallback("Finns inga tecken att hämta just nu. Försök igen senare.")
+                            isTranslating = false
+                            return@launch
                         } catch (e: Exception) {
                             attempt++
                             snackbarCallback("Misslyckad anslutning (försök $attempt). Försöker igen...")
@@ -88,7 +91,7 @@ class MainViewModel : ViewModel() {
                     }
 
                     if (!success) {
-                        snackbarCallback("Det gick inte att ansluta. Försök igen senare.")
+                        snackbarCallback("Det går inte att ansluta till servern just nu. Försök igen senare.")
                         isTranslating = false
                         return@launch
                     }

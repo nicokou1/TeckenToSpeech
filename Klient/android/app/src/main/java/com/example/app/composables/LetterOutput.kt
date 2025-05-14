@@ -28,31 +28,31 @@ import com.example.app.connection.Letter
 // 2025-04-28 Mimoza Behrami - Lagt till en textruta som hämtad data skrivs ut i
 // 2025-05-09 Mimoza Behrami - Lagt till skrollningsfunktion, ifall textrutan blir överfylld så blir den skrollbar
 
-class LetterOutput {
-
-    @Composable
-    fun ShowLetterOnScreen(fetchedLetter: Letter?) {
-        Box(
-            modifier = Modifier.fillMaxSize()
+@Composable
+fun ShowLetterOnScreen(fetchedLetter: Letter?) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // en transparent container som fungerar som textruta
+        Surface(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 120.dp)
+                .width(334.dp)
+                .height(192.dp),
+            color = Color.Transparent,
+            shape = MaterialTheme.shapes.medium
         ) {
-            // en transparent container som fungerar som textruta
-            Surface(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(top = 120.dp)
-                    .width(334.dp)
-                    .height(192.dp),
-                color = Color.Transparent,
-                shape = MaterialTheme.shapes.medium
-            ) {
-                fetchedLetter?.let { letter ->
-                    Column(modifier = Modifier
+            fetchedLetter?.let { letter ->
+                Column(
+                    modifier = Modifier
                         .padding(8.dp)
                         .verticalScroll(rememberScrollState())
-                    ) {
-                        Text(text = letter.body,
-                            fontSize = 30.sp)
-                    }
+                ) {
+                    Text(
+                        text = letter.body,
+                        fontSize = 30.sp
+                    )
                 }
             }
         }

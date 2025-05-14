@@ -20,6 +20,7 @@ import kotlinx.serialization.json.Json
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 
 /**
+ *
  * Suspend functions are used for time consuming operations, such as network communication.
  * It must be called from within a coroutine, which is a lightweight alternative to a thread (java.Thread).
  * .body() is used for deserializing the server response and converting to the return type.
@@ -29,19 +30,21 @@ import kotlinx.serialization.json.Json
  */
 suspend fun fetchLetter(): Letter {
 
-    //skapar HTTP-klient med CIO-motor som hanterar nätverkstrafiken (se build.gradle)
+    //skapar HTTP-klient med CIO-motor som hanterar nätverkstrafiken
     val client = HttpClient(CIO) {
 
         // klientdriven innehållsförhandling
         install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true }) //ignorera eventuella okända fält, förhindrar krasch
+            json(Json { ignoreUnknownKeys = true }) //ignorerar okända fält
         }
     }
-    return client.get("http://51.21.255.36:8000/app").body()
+    return client.get("http://51.21.255.36:8000/letter").body()
 }
 
 // testmetod för felhantering vid anslutningsproblem
-/*suspend fun fetchLetter(): Letter {
+/*
+suspend fun fetchLetter(): Letter {
     delay(30000)
     return Letter("X")
-}*/
+}
+*/

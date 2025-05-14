@@ -3,6 +3,7 @@ package com.example.app.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,7 +13,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.VolumeOff
+import androidx.compose.ui.Alignment
+import kotlinx.coroutines.launch
 
 
 /**
@@ -110,6 +114,23 @@ fun ClearIconButton(onClear : () -> Unit) {
             contentDescription = "Radera",
             tint = Color.White,
             modifier = Modifier.size(32.dp)
+        )
+    }
+}
+
+@Composable
+fun BoxScope.MenuIconButton(onClick: () -> Unit) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .align(Alignment.TopStart)
+            .padding(16.dp)
+            .size(48.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Menu,
+            contentDescription = "Öppna historik",
+            tint = Color.Gray
         )
     }
 }
