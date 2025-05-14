@@ -19,13 +19,13 @@ app = FastAPI()
 
 http_log = deque(maxlen=20)
 data_storage = deque(maxlen=2)
-class Gesture(BaseModel):
-    gesture: str
-    confidence: float
+letter_queue = deque()
+
+class LetterInput(BaseModel):
+    letter: str
 
 # Modell för data som ska hämtas med /image
-class ImageInput(BaseModel):
-    picture: str
+
 # Modell för data som ska skickas till /app
 class AppInput(BaseModel):
     id: int
@@ -45,10 +45,7 @@ async def log_requests(request: Request, call_next):
         "path": request.url.path,
         "status_code": response.status_code
     })
-
     return response
-
-
 health_router = APIRouter(prefix="/health")
 
 # Checkar status på Servern.
@@ -79,41 +76,23 @@ def send_data():
     }
     return JSONResponse(content=data)
 
-# Test metod där Inbyggda systemet skickar en bild till server
-# I sin tur decodear Servern bilden och visar den.
-@app.post("/image")
-async def image_gesture(data: ImageInput):
-    #if not data.picture:
-    if data is None:
-        raise HTTPException(status_code=404, detail=f"Item not found")
-    try:
-       #image_data = base64.b64decode(data.picture)
-        #image = Image.open(BytesIO(image_data))
-        #timestamp = time.strftime("%Y%m%d-%H%M%S")
-        #filename = f"{timestamp}.jpg"
-        #image_path = os.path.join(UPLOAD_FOLDER, filename)
-        #image.save(image_path)
-        #print(f"Image saved at {image_path}")
-        return {"message": "Image successfully saved"}
+@app.post("/letter")
+def enqueue_letter(data: LetterInput):  
+    if not data.letter:
+        raise HTTPException(status_code=400, detail="No letter provided")
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
+    letter_queue.append(data.letter)
+    return {"response": "Letter queued"}
+
+@app.get("/letter")
+def dequeue_letter():
+    if not letter_queue:
+        raise HTTPException(status_code=404, detail="No letters in queue")
+    next_letter = letter_queue.popleft()
+    return JSONResponse(content={"letter": next_letter})
 
 
-# Metod där Inbyggda systemet skickar data till Server
-# Om datan är null == Felmeddelande
-# Annars lagras datan och svarar med OK!
-@app.post("/upload")
-def upload_gesture(data: Gesture):
-    if data is None:
-        raise HTTPException(status_code=404, detail=f"Trash data :(")
-    else:
-        data_storage.append(data.model_dump())
-        return {
-            "response": "OK!"
-        }
-
-# Metod som hämtar & returnerar lagrad data
-@app.get("/fetch")
-def fetch_data():
-    return data_storage
+@app.get("/queue")
+def peek_queue():
+    # return the list of pending letters without removing
+    return {"pending_letters": list(letter_queue)}
