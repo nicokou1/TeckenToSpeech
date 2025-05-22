@@ -1,40 +1,32 @@
-import base64
-import os
-import time
-
+# Nödvändiga importer..
 from fastapi import FastAPI, HTTPException, APIRouter, Request
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
-from PIL import Image
-from io import BytesIO
 from collections import deque
 from starlette.responses import JSONResponse
 from datetime import datetime
 
+# @author Nicolas K, Rawan, Hiyam. 2025-05-22
+# Detta är koden för API servern där all HTTP kommunikation mellan våra enheter finns.
+
+
 app = FastAPI()
-# Hela klassen är @author Nicolas K, Rawan, Hiyam. 2025-04-28
-#UPLOAD_FOLDER = "saved_images"
 
-#os.makedirs(UPLOAD_FOLDER, exist_ok=False)
-
+# Köer
 http_log = deque(maxlen=20)
-data_storage = deque(maxlen=2)
 letter_queue = deque()
 
+# Prefix
+health_router = APIRouter(prefix="/health")
+
+
+# Letter mall för bokstäver som skickas mellan IS & Klient.
+# Innehåller en sträng med bokstav.
 class LetterInput(BaseModel):
     letter: str
 
-# Modell för data som ska hämtas med /image
-
-# Modell för data som ska skickas till /app
-class AppInput(BaseModel):
-    id: int
-    title: str
-    body: str
-
-# Metod som fångar upp HTTP metodanrops meddelanden
-# Som sedan lagras i en lista som i sin höjd har de
-# 20 senaste anropen.
+# Metod som fångar upp HTTP metodanrops meddelanden.
+# Lagras sedan i en lista som i sin höjd har de 20 senaste anropen.
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     response = await call_next(request)
@@ -46,36 +38,32 @@ async def log_requests(request: Request, call_next):
         "status_code": response.status_code
     })
     return response
-health_router = APIRouter(prefix="/health")
 
-# Checkar status på Servern.
-# Om Servern är aktiv skickas vårt returmeddelande
-# Annars felkod.
+
+# GET status som hämtar aktuell status på servern.
+# Ifall server är aktiv, returmeddelande med aktuell status,
+# annars felkod.
 @health_router.get("/status")
 def get_status():
     return {"status": "API is alive!"}
 
+
+# GET history metod som hämtar historiken av HTTP anrop på server sedan start.
 @health_router.get("/history")
 def get_http_history():
     return list(http_log)
 
 app.include_router(health_router)
 
-# Metod som skickar användaren till dokumentations sidan.
+# GET metod som skickar användaren till den interaktiva docs sidan.
 @app.get("/")
 def redirect_to_docs():
     return RedirectResponse(url="/docs")
 
-# Metod där Klienten hämtar fejk data i form av JSON.
-# Vid riktig implementation skall fejk datan vara den data
-# vi får från det Inbyggda systemet.
-@app.get("/app")
-def send_data():
-    data = {
-        "letter": "A"
-    }
-    return JSONResponse(content=data)
 
+# POST letter metod som det inbyggda systemet använder för att
+# skicka den tolkade bokstaven till servern.
+# Lagrar sedan bokstaven i en kö enligt LIFO.
 @app.post("/letter")
 def enqueue_letter(data: LetterInput):  
     if not data.letter:
@@ -84,6 +72,10 @@ def enqueue_letter(data: LetterInput):
     letter_queue.append(data.letter)
     return {"response": "Letter queued"}
 
+
+# GET letter metod som app-klienten använder för att
+# hämta tolkade bokstäver från servern.
+# Den hämtade bokstaven tas sedan bort från kön.
 @app.get("/letter")
 def dequeue_letter():
     if not letter_queue:
@@ -92,7 +84,8 @@ def dequeue_letter():
     return JSONResponse(content={"letter": next_letter})
 
 
+# GET queue metod som hämtar listan på aktuell kö.
+# Användningsfall är genom den interaktiva dokumentationen, FastAPI.
 @app.get("/queue")
 def peek_queue():
-    # return the list of pending letters without removing
     return {"pending_letters": list(letter_queue)}
