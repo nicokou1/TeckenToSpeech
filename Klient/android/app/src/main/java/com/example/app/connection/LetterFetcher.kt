@@ -40,11 +40,3 @@ suspend fun fetchLetter(): Letter {
     }
     return client.get("http://51.21.255.36:8000/letter").body()
 }
-
-// testmetod för felhantering vid anslutningsproblem
-/*
-suspend fun fetchLetter(): Letter {
-    delay(30000)
-    return Letter("X")
-}
-*/
