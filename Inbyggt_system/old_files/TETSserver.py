@@ -1,3 +1,5 @@
+# Author: David Hornemark
+
 import threading
 import json
 import time
