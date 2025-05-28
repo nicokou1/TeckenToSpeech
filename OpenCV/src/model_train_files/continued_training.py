@@ -6,7 +6,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 # continued_training.py
-# @author Nicolas K, Emil F. 2025-05-22
+# @author Nicolas K, Emil F using Peer Programming (XP). 2025-05-22
 # Användes för att fortsätta träna på en befintlig modell.
 
 # Parametrar

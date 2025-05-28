@@ -6,7 +6,7 @@ from tensorflow.keras import regularizers
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 
 # train_model.py
-# @author Nicolas K, Emil F. 2025-05-22
+# @author Nicolas K, Emil F using Peer Programming (XP). 2025-05-22
 # En av våra träningsmodells kodfiler.
 
 # sökväg

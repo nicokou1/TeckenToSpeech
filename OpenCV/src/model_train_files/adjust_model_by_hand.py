@@ -5,7 +5,7 @@ from tensorflow.keras.models import Model
 import os
 
 # adjust_model_by_hand.py
-# @author Nicolas K, Emil F. 2025-05-22
+# @author Nicolas K, Emil F using Peer Programming (XP). 2025-05-22
 # Tar in befintlig modell och justerar enstaka vikter för hand.
 
 # Konstanter som ska matcha träningskonstanterna

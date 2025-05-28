@@ -11,7 +11,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.applications.mobilenet import preprocess_input
 
 # start_predict.py
-# @author Nicolas K, Emil F. 2025-05-22
+# @author Nicolas K, Emil F using Peer Programming (XP). 2025-05-22
 # Klassen som startar video, påbörjar prediktering samt
 # skickar över data till server.
 
