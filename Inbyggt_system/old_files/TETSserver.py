@@ -53,6 +53,6 @@ def get():
         response = requests.get(url, timeout=1)
         print(response.json())
     except:
-        print("horunge")
+        print("X")
     return
     
