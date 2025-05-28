@@ -1,9 +1,12 @@
-# JusteraModellByHand.py
 import string
 from tensorflow.keras.applications import Xception
 from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
 from tensorflow.keras.models import Model
 import os
+
+# adjust_model_by_hand.py
+# @author Nicolas K, Emil F. 2025-05-22
+# Tar in befintlig modell och justerar enstaka vikter för hand.
 
 # Konstanter som ska matcha träningskonstanterna
 IMAGE_HEIGHT = 224

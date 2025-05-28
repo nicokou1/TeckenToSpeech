@@ -1,10 +1,8 @@
-import Inbyggt_system.producer_frames
-import numpy as np
-
+import Inbyggt_system.old_files.producer_frames
 
 
 def main():
-    producer = Inbyggt_system.producer_frames.frame_producer()
+    producer = Inbyggt_system.old_files.producer_frames.frame_producer()
     
     for frame in producer.capture_loop():
         print(frame)

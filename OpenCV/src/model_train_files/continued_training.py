@@ -5,17 +5,18 @@ from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-# continuedTraining.py
-# Användes för att fortsätta träna på en befintlig modell
+# continued_training.py
+# @author Nicolas K, Emil F. 2025-05-22
+# Användes för att fortsätta träna på en befintlig modell.
 
 # Parametrar
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Befintliga modellen
-MODEL_IN  = os.path.join(BASE_DIR, "best_model_weights_continued_3_D1o2.h5")
+MODEL_IN  = os.path.join(BASE_DIR, "befintligmodell.h5")
 
 # Uppdaterade modellen
-MODEL_OUT = os.path.join(BASE_DIR, "best_model_weights_newpics_4_.h5")
+MODEL_OUT = os.path.join(BASE_DIR, "nyamodellen.h5")
 
 # Dataset
 TRAIN2 = os.path.join(BASE_DIR, "data", "SSL-dataset-1", "train")

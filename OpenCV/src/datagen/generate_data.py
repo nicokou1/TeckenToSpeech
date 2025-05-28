@@ -3,6 +3,7 @@ import cv2
 import os
 
 # generate_data.py
+# @author Nicolas K, Emil F. 2025-05-22
 # Användes för att skapa dataset bilderna
 
 

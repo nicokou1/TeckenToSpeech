@@ -7,7 +7,8 @@ from constants import CLASSES
 import tensorflow as tf
 
 # cam_run.py
-# GAMMAL! klass för att starta igenkänning med vald modell
+# @author Nicolas K, Emil F. 2025-05-22
+# GAMMAL! klass för att starta igenkänning med vald modell.
 
 
 # ROI-koordinater

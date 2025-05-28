@@ -9,7 +9,11 @@ from tensorflow.keras.applications import Xception
 from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
 from tensorflow.keras.models import Model
 from tensorflow.keras.applications.mobilenet import preprocess_input
-# startPredict.py
+
+# start_predict.py
+# @author Nicolas K, Emil F. 2025-05-22
+# Klassen som startar video, påbörjar prediktering samt
+# skickar över data till server.
 
 # Konstanter som måste matcha övriga filer.
 IMAGE_HEIGHT = 224
