@@ -6,7 +6,7 @@ from collections import deque
 from starlette.responses import JSONResponse
 from datetime import datetime
 
-# @author Nicolas K, Rawan, Hiyam. 2025-05-22
+# @author Nicolas K, Rawan, Hiam. 2025-05-22
 # Detta är koden för API servern där all HTTP kommunikation mellan våra enheter finns.
 
 
@@ -22,7 +22,7 @@ health_router = APIRouter(prefix="/health")
 
 # Letter mall för bokstäver som skickas mellan IS & Klient.
 # Innehåller en sträng med bokstav.
-# @author Hiyam
+# @author Hiam
 class LetterInput(BaseModel):
     letter: str
 
@@ -93,7 +93,7 @@ def dequeue_letter():
 
 # GET queue metod som hämtar listan på aktuell kö.
 # Användningsfall är genom den interaktiva dokumentationen, FastAPI.
-# @author Hiyam
+# @author Hiam
 @app.get("/queue")
 def peek_queue():
     return {"pending_letters": list(letter_queue)}
