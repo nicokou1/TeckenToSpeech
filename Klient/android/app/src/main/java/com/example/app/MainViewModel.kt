@@ -55,7 +55,7 @@ class MainViewModel : ViewModel() {
      * Fetches letters from the server repeatedly with retry logic.
      * Shows feedback to the user via snackbarCallback.
      * @param snackbarCallback function to show messages to the user
-     * @author Farzaneh Ibrahimi
+     * @author Farzaneh Ibrahimi & Mimoza Behrami
      */
     fun toggleTranslation(snackbarCallback: suspend (String) -> Unit) {
         if (isTranslating) {
