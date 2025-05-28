@@ -18,7 +18,7 @@ import kotlinx.coroutines.isActive
  * ViewModel (controller) containing business logic for the UI.
  * Translation toggling, data fetching, and history management.
  * Separates logic from MainActivity to improve readability and maintainability.
- * @author Mimoza Behrami
+ * @author Mimoza Behrami & Farzaneh Ibrahimi
  * @since 2025-05-06
  */
 
@@ -51,9 +51,11 @@ class MainViewModel : ViewModel() {
     private var fetchJob: Job? = null
 
     /**
-     * <kommentar>
-     * @author Farzaneh Ibrahimi
-     * @since 2025-05-06
+     * Starts or stops the translation process.
+     * Fetches letters from the server repeatedly with retry logic.
+     * Shows feedback to the user via snackbarCallback.
+     * @param snackbarCallback function to show messages to the user
+     * @author Farzaneh Ibrahimi & Mimoza Behrami
      */
     fun toggleTranslation(snackbarCallback: suspend (String) -> Unit) {
         if (isTranslating) {

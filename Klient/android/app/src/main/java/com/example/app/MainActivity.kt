@@ -40,7 +40,6 @@ import androidx.compose.runtime.LaunchedEffect
 // Changelog:
 // 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
 // 2025-04-24 Mimoza Behrami - Lagt till knapparna från Buttons i onCreate()
-// 2025-04-28 Farzaneh Ibrahimi - Lagt till bakgrundsbild
 // 2025-04-30 Mimoza Behrami - Lagt till en sidopanel att spara historiken i
 // 2025-05-06 Mimoza Behrami - Flyttat allt som inte är grafik ("view") till MainViewModel.
 // 2025-05-06 Mimoza Behrami - Instansierar TTSManager samt lagt till funktioner som ttsManager använder.

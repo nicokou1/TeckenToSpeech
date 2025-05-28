@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 /**
  * This class contains all buttons to be shown and used on UI.
  * @author Farzaneh Ibrahimi & Mimoza Behrami
- * @since ?
  */
 
 // Changelog:
@@ -69,7 +68,6 @@ fun BottomCenterButton(
  * Clickable button with the symbol of a speaker.
  * Toggles state between sound on or sound off.
  * @author Farzaneh Ibrahimi
- * @since ?
  */
 @Composable
 fun SpeakerIconButton(
@@ -97,7 +95,6 @@ fun SpeakerIconButton(
  * Clickable button with the symbol of a trash can.
  * For deleting letters on screen.
  * @author Farzaneh Ibrahimi
- * @since ?
  */
 @Composable
 fun ClearIconButton(onClear : () -> Unit) {
