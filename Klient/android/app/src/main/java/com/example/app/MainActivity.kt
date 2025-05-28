@@ -3,132 +3,180 @@ package com.example.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.VerticalAlignmentLine
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
-
-//2025-04-14
-//mimoza har lagt till följande importer:
-import androidx.lifecycle.lifecycleScope
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.example.app.composables.*
+import androidx.compose.material.ModalDrawer
+import androidx.compose.material.DrawerValue
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material.rememberDrawerState
+import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
-import android.util.Log
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.example.app.tts.TTSManager
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.*
 
-// HEJ HEJ!
+/**
+ * MainActivity is the primary entry point of the application.
+ * It is responsible for initializing the UI and setting up necessary components during app startup.
+ * Serves as a gateway to the business logic.
+ * Contains lifecycle functions for TTS.
+ * @author Mimoza Behrami & Farzaneh Ibrahimi
+ * @since 2025-04-14
+ */
+
+// Changelog:
+// 2025-04-17 Mimoza Behrami - Lagt till JavaDoc
+// 2025-04-24 Mimoza Behrami - Lagt till knapparna från Buttons i onCreate()
+// 2025-04-28 Farzaneh Ibrahimi - Lagt till bakgrundsbild
+// 2025-04-30 Mimoza Behrami - Lagt till en sidopanel att spara historiken i
+// 2025-05-06 Mimoza Behrami - Flyttat allt som inte är grafik ("view") till MainViewModel.
+// 2025-05-06 Mimoza Behrami - Instansierar TTSManager samt lagt till funktioner som ttsManager använder.
+// 2025-05-09 Mimoza Behrami - Lagt till "hamburgerknapp" och "snackbar" för historikpanelen.
+// 2025-05-12 Mimoza Behrami - Lagt till LaunchedEffect i setContent som ttsManager använder.
+// 2025-05-13 Mimoza Behrami - Ändrat onClick i BottomCenterButton för att hantera felmeddelanden.
 
 class MainActivity : ComponentActivity() {
 
-    //onCreate är alltid det första som körs då appen öppnas
+    private lateinit var ttsManager: TTSManager
+
+    // onCreate är alltid det första som körs då appen öppnas
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //composables som ska visas på UI
+        ttsManager = TTSManager(this)
+        ttsManager.init()
+
+        // innehållet i UI
         setContent {
-            PostListScreen()
-        }
 
-    }
-}
+            val viewModel: MainViewModel = viewModel()
+            val drawerState = rememberDrawerState(DrawerValue.Closed)
+            val scope = rememberCoroutineScope()
+            var isVolumeOn by remember { mutableStateOf(false) }
+            val fetchedLetter = viewModel.fetchedLetter
+            val isTranslating = viewModel.isTranslating
+            val historyList = viewModel.historyList
+            val snackbarHostState = remember { SnackbarHostState() }
+            var lastSpokenLength by remember { mutableStateOf(0) }
 
-@Composable
-fun PostListScreen() {
-    var posts by remember { mutableStateOf< List<Post> >(emptyList()) }
+            // följer med i bokstavsflödet, undviker upprepning av föregående bokstäver
+            LaunchedEffect(fetchedLetter, isVolumeOn) {
+                if (isVolumeOn && fetchedLetter != null && fetchedLetter.body.length > lastSpokenLength) {
+                    val newText = fetchedLetter.body.substring(lastSpokenLength)
+                    ttsManager.speak(newText)
+                    lastSpokenLength = fetchedLetter.body.length
+                }
+            }
 
-    // startar en coroutine som fetchar de första 5 elementen
-    LaunchedEffect(Unit) {
-        posts = fetchPosts().take(5)
-    }
+            // skapar instans av sidopanelen för historik
+            ModalDrawer(
+                drawerState = drawerState,
+                drawerContent = {
+                    HistoryDrawerContent(historyList = historyList, onClose = {
+                        scope.launch { drawerState.close() }
+                    })
+                }
+            ) {
+                // innehållets layout
+                MaterialTheme {
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        snackbarHost = { SnackbarHost(snackbarHostState) }
+                    ) { innerPadding ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                        ) {
 
-    // items = generisk lista som elementen placeras i
-    // för varje element, skriv ut title i UI
-    LazyColumn {
-        items(posts) { post ->
-            Column {
-                Text(text = "ID: ${post.id}")
-                Text(text = "Bokstav: ${post.letter}")
+                            // ställer in bakgrundsbild
+                            Image(
+                                painter = painterResource(id = R.drawable.img),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
+                            )
+
+                            HistoryButton {
+                                scope.launch { drawerState.open() }
+                            }
+
+                            // visar den hämtade bokstaven i textrutan
+                            ShowLetterOnScreen(fetchedLetter)
+
+                            // ställer in och visar de tre nedersta knapparna
+                            Row(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .padding(bottom = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+
+                                ClearIconButton(onClear = {
+                                    if (fetchedLetter != null) {
+                                        viewModel.clearFetchedLetters()
+                                        isVolumeOn = false
+                                        lastSpokenLength = 0
+                                        scope.launch { drawerState.open() }
+                                    } else {
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar("Det finns inget att radera.")
+                                        }
+                                    }
+                                })
+
+                                BottomCenterButton(
+                                    isTranslating = isTranslating,
+                                    onClick = {
+                                        viewModel.toggleTranslation { message ->
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(message)
+                                            }
+                                        }
+                                    }
+                                )
+
+                                SpeakerIconButton(
+                                    isVolumeOn = isVolumeOn,
+                                    onClick = {
+                                        if (!isVolumeOn && fetchedLetter != null) {
+                                            lastSpokenLength = 0
+                                            isVolumeOn = true
+                                        } else {
+                                            isVolumeOn = false
+                                            ttsManager.stop()
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-}
 
-
-
-/*
-@Composable
-public fun TestColumn() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(
-            "Hej1",
-            color = Color.Magenta,
-            fontSize = 50.sp
-        )
-        Text(
-            "Hej2",
-            color = Color.Red,
-            fontSize = 30.sp
-        )
+    /**
+     * Called when the activity is being destroyed by the system.
+     * Shuts down the TTS engine to release resources.
+     * @author Mimoza Behrami
+     * @since 2025-05-06
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        ttsManager.shutdown()
     }
 }
-
-@Composable
-public fun TestRow () {
-    Row (
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text("Hej3",
-            color = Color.Green,
-            fontSize = 43.sp
-        )
-        Text("Hej4",
-            color = Color.Blue,
-            fontSize = 32.sp
-        )
-    }
-}
-
-@Composable
-@Preview
-public fun TestButton () {
-    Column (
-
-    ){
-        //variable for counting button clicks
-        var counter = remember {
-            mutableStateOf(0)
-        }
-
-        Button(
-            {counter.value += 1} ) {
-            Text(
-                "This is a test button. " +
-                        "Clicked ${counter.value} times"
-            )
-        }
-    }
-}
-*/
