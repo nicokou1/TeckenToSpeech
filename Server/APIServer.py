@@ -22,11 +22,13 @@ health_router = APIRouter(prefix="/health")
 
 # Letter mall för bokstäver som skickas mellan IS & Klient.
 # Innehåller en sträng med bokstav.
+# @author Hiyam
 class LetterInput(BaseModel):
     letter: str
 
 # Metod som fångar upp HTTP metodanrops meddelanden.
 # Lagras sedan i en lista som i sin höjd har de 20 senaste anropen.
+# @author Nicolas K
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     response = await call_next(request)
@@ -43,12 +45,14 @@ async def log_requests(request: Request, call_next):
 # GET status som hämtar aktuell status på servern.
 # Ifall server är aktiv, returmeddelande med aktuell status,
 # annars felkod.
+# @author Rawan
 @health_router.get("/status")
 def get_status():
     return {"status": "API is alive!"}
 
 
 # GET history metod som hämtar historiken av HTTP anrop på server sedan start.
+# @author Nicolas K
 @health_router.get("/history")
 def get_http_history():
     return list(http_log)
@@ -56,6 +60,7 @@ def get_http_history():
 app.include_router(health_router)
 
 # GET metod som skickar användaren till den interaktiva docs sidan.
+# @author Nicolas K
 @app.get("/")
 def redirect_to_docs():
     return RedirectResponse(url="/docs")
@@ -64,6 +69,7 @@ def redirect_to_docs():
 # POST letter metod som det inbyggda systemet använder för att
 # skicka den tolkade bokstaven till servern.
 # Lagrar sedan bokstaven i en kö enligt LIFO.
+# @author Nicolas K
 @app.post("/letter")
 def enqueue_letter(data: LetterInput):  
     if not data.letter:
@@ -76,6 +82,7 @@ def enqueue_letter(data: LetterInput):
 # GET letter metod som app-klienten använder för att
 # hämta tolkade bokstäver från servern.
 # Den hämtade bokstaven tas sedan bort från kön.
+# @author Nicolas K
 @app.get("/letter")
 def dequeue_letter():
     if not letter_queue:
@@ -86,6 +93,7 @@ def dequeue_letter():
 
 # GET queue metod som hämtar listan på aktuell kö.
 # Användningsfall är genom den interaktiva dokumentationen, FastAPI.
+# @author Hiyam
 @app.get("/queue")
 def peek_queue():
     return {"pending_letters": list(letter_queue)}
